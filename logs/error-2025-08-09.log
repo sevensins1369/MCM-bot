@@ -1,0 +1,280 @@
+[2025-08-09T14:17:38.629Z] [ERROR] PrefixCommandHandler: Error executing prefix command sw
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31),
+  command: 'sw',
+  args: [],
+  userId: '832484278197420052',
+  guildId: '820806422119448626'
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T14:17:38.652Z] [ERROR] Command:sw: Error handling message command: safeExecute is not a function
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T14:17:45.170Z] [ERROR] PrefixCommandHandler: Error executing prefix command server-wallet
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31),
+  command: 'server-wallet',
+  args: [],
+  userId: '832484278197420052',
+  guildId: '820806422119448626'
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T14:17:45.179Z] [ERROR] Command:server-wallet: Error handling message command: safeExecute is not a function
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T14:22:49.241Z] [ERROR] PrefixCommandHandler: Error executing prefix command mybets
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\mybets.js:134:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31),
+  command: 'mybets',
+  args: [],
+  userId: '832484278197420052',
+  guildId: '820806422119448626'
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\mybets.js:134:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T14:22:49.244Z] [ERROR] Command:mybets: Error handling message command: safeExecute is not a function
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\mybets.js:134:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\mybets.js:134:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T20:29:14.149Z] [ERROR] PrefixCommandHandler: Error executing prefix command sw
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31),
+  command: 'sw',
+  args: [],
+  userId: '832484278197420052',
+  guildId: '820806422119448626'
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T20:29:14.159Z] [ERROR] Command:sw: Error handling message command: safeExecute is not a function
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T20:29:19.190Z] [ERROR] PrefixCommandHandler: Error executing prefix command server-wallet
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31),
+  command: 'server-wallet',
+  args: [],
+  userId: '832484278197420052',
+  guildId: '820806422119448626'
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+
+[2025-08-09T20:29:19.193Z] [ERROR] Command:server-wallet: Error handling message command: safeExecute is not a function
+Data: {
+  error: TypeError: safeExecute is not a function
+      at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+      at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+      at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+      at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+      at Client.emit (node:events:524:28)
+      at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+      at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+      at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+      at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+      at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+}
+Stack: TypeError: safeExecute is not a function
+    at Object.run (C:\Users\kozmi\FIXED STAKEBOT\commands\server-wallet.js:170:18)
+    at handlePrefixCommand (C:\Users\kozmi\FIXED STAKEBOT\utils\PrefixCommandHandler.js:65:27)
+    at Object.execute (C:\Users\kozmi\FIXED STAKEBOT\events\messageCreate.js:15:13)
+    at Client.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\index.js:138:54)
+    at Client.emit (node:events:524:28)
+    at MessageCreateAction.handle (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\actions\MessageCreate.js:32:14)
+    at module.exports [as MESSAGE_CREATE] (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\handlers\MESSAGE_CREATE.js:4:32)
+    at WebSocketManager.handlePacket (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:351:31)
+    at WebSocketManager.<anonymous> (C:\Users\kozmi\FIXED STAKEBOT\node_modules\discord.js\src\client\websocket\WebSocketManager.js:235:12)
+    at WebSocketManager.emit (C:\Users\kozmi\FIXED STAKEBOT\node_modules\@vladfrangu\async_event_emitter\dist\index.cjs:287:31)
+

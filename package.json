@@ -1,0 +1,29 @@
+{
+  "name": "stake-bot",
+  "version": "1.1.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node check-models.js && node index.js",
+    "dev": "nodemon index.js",
+    "deploy": "node deploy-commands.js",
+    "test": "node test-bot.js",
+    "check-models": "node check-models.js",
+    "lint": "eslint ."
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "A Discord bot for managing virtual currency, gambling games, and betting systems.",
+  "dependencies": {
+    "discord.js": "^14.21.0",
+    "dotenv": "^16.3.1",
+    "mongoose": "^7.5.0",
+    "uuid": "^11.1.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.47.0",
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.9.0"
+  }
+}
