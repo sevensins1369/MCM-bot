@@ -1,16 +1,26 @@
 {
   "832484278197420052": {
     "userId": "832484278197420052",
-    "defaultCurrency": "osrs",
+    "defaultCurrency": "rs3",
     "twitchUsername": null,
     "flowerPreference": "random",
-    "updatedAt": "2025-08-05T22:10:52.876Z"
+    "updatedAt": "2025-08-10T01:53:52.645Z",
+    "$setOnInsert": {
+      "__v": 0
+    }
   },
   "1270274256785248289": {
     "userId": "1270274256785248289",
     "defaultCurrency": "osrs",
     "twitchUsername": null,
     "flowerPreference": "random",
-    "updatedAt": "2025-08-07T21:30:38.187Z"
+    "updatedAt": "2025-08-osrsT21:30:38.187Z"
+  },
+  "734041292170068015": {
+    "userId": "734041292170068015",
+    "defaultCurrency": "osrs",
+    "twitchUsername": null,
+    "flowerPreference": "random",
+    "updatedAt": "2025-08-10T01:55:29.260Z"
   }
 }

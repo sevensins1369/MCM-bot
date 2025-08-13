@@ -3,6 +3,7 @@
 This document provides detailed information about the dice duel feature available in the StakeBot.
 
 ## Table of Contents
+
 1. [Overview](#overview)
 2. [Commands](#commands)
 3. [How to Play](#how-to-play)
@@ -16,6 +17,7 @@ Dice Duels is a player-versus-player (PvP) gambling feature that allows users to
 ## Commands
 
 ### `/diceduel <opponent> <amount> [currency]`
+
 - **Description:** Challenge another player to a dice duel
 - **Options:**
   - `opponent`: The player to challenge (required)
@@ -24,17 +26,20 @@ Dice Duels is a player-versus-player (PvP) gambling feature that allows users to
 - **Aliases:** `!diceduel`, `!dd`
 
 ### `/diceduel-cancel`
+
 - **Description:** Cancel your active dice duel
 - **Aliases:** `!diceduel-cancel`, `!ddc`
 
 ### `/diceduel-roll`
+
 - **Description:** Roll the dice in your active duel
 - **Aliases:** `!diceduel-roll`, `!ddr`
 
 ### `/diceduel-leaderboard <currency> <timeframe> <category>`
+
 - **Description:** View the dice duel leaderboard
 - **Options:**
-  - `currency`: The currency to view (osrs or rs3)
+  - `currency`: The currency to view (07 or rs3)
   - `timeframe`: The timeframe to view (allTime, daily, weekly, monthly)
   - `category`: The category to rank by (profit, wagered, wins, streak)
 - **Aliases:** `!diceduel-leaderboard`, `!ddlb`
@@ -42,16 +47,19 @@ Dice Duels is a player-versus-player (PvP) gambling feature that allows users to
 ## How to Play
 
 1. **Challenge a Player:**
+
    - Use the `/diceduel` command to challenge another player
    - Specify the amount you want to bet and the currency
    - The amount will be deducted from your wallet immediately
 
 2. **Accept/Decline:**
+
    - The challenged player will receive a message with buttons to accept or decline
    - If accepted, the bet amount will be deducted from their wallet
    - If declined, your bet will be refunded
 
 3. **Roll the Dice:**
+
    - Both players use the `/diceduel-roll` command to roll their dice
    - Each player rolls a random number between 1 and 100
    - The player with the higher roll wins
@@ -73,7 +81,7 @@ The dice duel system uses an in-memory storage system with the following data st
   challengerId: "challenger-discord-id",
   opponentId: "opponent-discord-id",
   amount: "1000000", // Stored as string to handle BigInt
-  currency: "osrs", // or "rs3"
+  currency: "07", // or "rs3"
   createdAt: Date,
   isAccepted: false,
   isComplete: false,
@@ -88,6 +96,7 @@ The dice duel system uses an in-memory storage system with the following data st
 ### Managers
 
 The `DiceDuelManager.js` utility handles all dice duel operations:
+
 - Creating duels
 - Accepting duels
 - Processing rolls
@@ -98,6 +107,7 @@ The `DiceDuelManager.js` utility handles all dice duel operations:
 ### Error Handling
 
 The dice duel system includes comprehensive error handling:
+
 - Validation of all user inputs
 - Proper error messages for common issues
 - Prevention of multiple active duels
@@ -114,13 +124,15 @@ The dice duel leaderboard tracks various statistics:
 - **Streak:** Best winning streak in dice duels
 
 Leaderboards can be filtered by:
-- **Currency:** OSRS or RS3
+
+- **Currency:** 07 or RS3
 - **Timeframe:** All time, daily, weekly, or monthly
 - **Category:** Profit, wagered, wins, or streak
 
 ## Future Enhancements
 
 Potential future improvements to the dice duel system:
+
 - Persistent storage in MongoDB for active duels
 - Automatic timeout for inactive duels
 - Spectator mode for other users to watch duels

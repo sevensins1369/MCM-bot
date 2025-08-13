@@ -78,3 +78,115 @@
 
 [2025-08-09T20:27:02.521Z] [INFO] Bot: Loaded 0 message triggers
 
+[2025-08-09T22:32:45.519Z] [INFO] Database: Attempting to connect to MongoDB with: localhost:27017/stakebot
+
+[2025-08-09T22:32:45.610Z] [INFO] Database: Connected to MongoDB successfully
+
+[2025-08-09T22:32:45.801Z] [INFO] DiceManager: Loaded 0 active dice games
+
+[2025-08-09T22:32:45.802Z] [INFO] DiceManager: Loaded 1 active dice tables
+
+[2025-08-09T22:32:46.730Z] [INFO] Bot: Ready! Logged in as test stakebot#8488 (ID: 1384727940394123305)
+
+[2025-08-09T22:32:46.732Z] [INFO] Bot: Connected to 1 servers
+
+[2025-08-09T22:32:46.734Z] [INFO] Bot: Loaded 67 slash commands
+
+[2025-08-09T22:32:46.735Z] [INFO] Bot: Loaded 0 message triggers
+
+[2025-08-09T22:57:28.549Z] [INFO] Database: Attempting to connect to MongoDB with: localhost:27017/stakebot
+
+[2025-08-09T22:57:28.594Z] [INFO] Database: Connected to MongoDB successfully
+
+[2025-08-09T22:57:28.787Z] [INFO] DiceManager: Loaded 0 active dice games
+
+[2025-08-09T22:57:28.788Z] [INFO] DiceManager: Loaded 1 active dice tables
+
+[2025-08-09T22:57:29.671Z] [INFO] Bot: Ready! Logged in as test stakebot#8488 (ID: 1384727940394123305)
+
+[2025-08-09T22:57:29.672Z] [INFO] Bot: Connected to 1 servers
+
+[2025-08-09T22:57:29.674Z] [INFO] Bot: Loaded 67 slash commands
+
+[2025-08-09T22:57:29.675Z] [INFO] Bot: Loaded 0 message triggers
+
+[2025-08-09T23:03:19.045Z] [INFO] Database: Attempting to connect to MongoDB with: localhost:27017/stakebot
+
+[2025-08-09T23:03:19.088Z] [INFO] Database: Connected to MongoDB successfully
+
+[2025-08-09T23:03:19.300Z] [INFO] DiceManager: Loaded 0 active dice games
+
+[2025-08-09T23:03:19.301Z] [INFO] DiceManager: Loaded 1 active dice tables
+
+[2025-08-09T23:03:20.321Z] [INFO] Bot: Ready! Logged in as test stakebot#8488 (ID: 1384727940394123305)
+
+[2025-08-09T23:03:20.322Z] [INFO] Bot: Connected to 1 servers
+
+[2025-08-09T23:03:20.324Z] [INFO] Bot: Loaded 67 slash commands
+
+[2025-08-09T23:03:20.327Z] [INFO] Bot: Loaded 0 message triggers
+
+[2025-08-09T23:13:41.000Z] [INFO] Database: Attempting to connect to MongoDB with: localhost:27017/stakebot
+
+[2025-08-09T23:13:41.045Z] [INFO] Database: Connected to MongoDB successfully
+
+[2025-08-09T23:13:41.420Z] [INFO] DiceManager: Loaded 0 active dice games
+
+[2025-08-09T23:13:41.436Z] [INFO] DiceManager: Loaded 1 active dice tables
+
+[2025-08-09T23:13:42.649Z] [INFO] Bot: Ready! Logged in as test stakebot#8488 (ID: 1384727940394123305)
+
+[2025-08-09T23:13:42.650Z] [INFO] Bot: Connected to 1 servers
+
+[2025-08-09T23:13:42.651Z] [INFO] Bot: Loaded 67 slash commands
+
+[2025-08-09T23:13:42.652Z] [INFO] Bot: Loaded 0 message triggers
+
+[2025-08-09T23:16:24.495Z] [INFO] Database: Attempting to connect to MongoDB with: localhost:27017/stakebot
+
+[2025-08-09T23:16:24.542Z] [INFO] Database: Connected to MongoDB successfully
+
+[2025-08-09T23:16:24.739Z] [INFO] DiceManager: Loaded 0 active dice games
+
+[2025-08-09T23:16:24.742Z] [INFO] DiceManager: Loaded 1 active dice tables
+
+[2025-08-09T23:16:26.083Z] [INFO] Bot: Ready! Logged in as test stakebot#8488 (ID: 1384727940394123305)
+
+[2025-08-09T23:16:26.084Z] [INFO] Bot: Connected to 1 servers
+
+[2025-08-09T23:16:26.085Z] [INFO] Bot: Loaded 67 slash commands
+
+[2025-08-09T23:16:26.087Z] [INFO] Bot: Loaded 0 message triggers
+
+[2025-08-09T23:40:49.121Z] [INFO] Database: Attempting to connect to MongoDB with: localhost:27017/stakebot
+
+[2025-08-09T23:40:49.193Z] [INFO] Database: Connected to MongoDB successfully
+
+[2025-08-09T23:40:49.396Z] [INFO] DiceManager: Loaded 0 active dice games
+
+[2025-08-09T23:40:49.398Z] [INFO] DiceManager: Loaded 1 active dice tables
+
+[2025-08-09T23:40:50.576Z] [INFO] Bot: Ready! Logged in as test stakebot#8488 (ID: 1384727940394123305)
+
+[2025-08-09T23:40:50.577Z] [INFO] Bot: Connected to 1 servers
+
+[2025-08-09T23:40:50.580Z] [INFO] Bot: Loaded 67 slash commands
+
+[2025-08-09T23:40:50.581Z] [INFO] Bot: Loaded 0 message triggers
+
+[2025-08-09T23:58:23.553Z] [INFO] Database: Attempting to connect to MongoDB with: localhost:27017/stakebot
+
+[2025-08-09T23:58:23.599Z] [INFO] Database: Connected to MongoDB successfully
+
+[2025-08-09T23:58:23.857Z] [INFO] DiceManager: Loaded 0 active dice games
+
+[2025-08-09T23:58:23.860Z] [INFO] DiceManager: Loaded 1 active dice tables
+
+[2025-08-09T23:58:24.867Z] [INFO] Bot: Ready! Logged in as test stakebot#8488 (ID: 1384727940394123305)
+
+[2025-08-09T23:58:24.870Z] [INFO] Bot: Connected to 1 servers
+
+[2025-08-09T23:58:24.872Z] [INFO] Bot: Loaded 67 slash commands
+
+[2025-08-09T23:58:24.874Z] [INFO] Bot: Loaded 0 message triggers
+
