@@ -5,9 +5,10 @@ const { getWallet, updateWallet } = require("../utils/WalletManager");
 const {
   getServerWallet,
   updateServerWallet,
-} = require("../utils/ServerWalletManager");
+} = require("../utils/serverwalletmanager");
 const { updateDonationStats } = require("../utils/PlayerStatsManager");
 const { EMOJIS, formatAmount } = require("../utils/embedcreator");
+const { logger } = require("../enhanced-logger");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -36,12 +37,27 @@ module.exports = {
       const user = interaction.user;
       const rawAmount = interaction.options.getString("amount");
       const currency = interaction.options.getString("currency");
-      console.log(
-        `[EXECUTE] /donate by ${user.tag} for ${rawAmount} ${currency}`
+
+      logger.info(
+        "DonateCommand",
+        `Donation requested by ${user.tag} for ${rawAmount} ${currency}`
       );
 
-      const amount = parseAmount(rawAmount);
-      if (amount <= 0n) {
+      // Parse amount safely
+      let amount;
+      try {
+        amount = parseAmount(rawAmount);
+        if (!amount || amount <= 0n) {
+          return interaction.editReply({
+            content: "❌ Invalid amount format.",
+          });
+        }
+      } catch (error) {
+        logger.error(
+          "DonateCommand",
+          `Error parsing amount: ${error.message}`,
+          { rawAmount }
+        );
         return interaction.editReply({ content: "❌ Invalid amount format." });
       }
 
@@ -52,26 +68,53 @@ module.exports = {
         });
       }
 
-      const serverWallet = await getServerWallet(interaction.guild.id);
+      // Ensure we have a valid guild ID
+      if (!interaction.guild || !interaction.guild.id) {
+        return interaction.editReply({
+          content: "❌ This command can only be used in a server.",
+        });
+      }
 
-      userWallet[currency] -= amount;
-      serverWallet[currency] += amount;
+      try {
+        // Get server wallet with the guild ID
+        const serverWallet = await getServerWallet(interaction.guild.id);
 
-      await updateWallet(user.id, userWallet);
-      await updateServerWallet(interaction.guild.id, serverWallet);
+        // Update wallets with safe BigInt operations
+        userWallet[currency] = BigInt(userWallet[currency]) - BigInt(amount);
+        serverWallet[currency] =
+          BigInt(serverWallet[currency]) + BigInt(amount);
 
-      // Log the donation for the leaderboard
-      await updateDonationStats(user.id, currency, amount);
+        await updateWallet(user.id, userWallet);
+        await updateServerWallet(interaction.guild.id, serverWallet);
 
-      await interaction.editReply({
-        content: `${
-          EMOJIS.win
-        } Thank you for your generous donation of **${formatAmount(
-          amount
-        )} ${currency.toUpperCase()}** to the server event pool!`,
-      });
+        // Log the donation for the leaderboard
+        await updateDonationStats(user.id, currency, amount);
+
+        logger.info("DonateCommand", `Donation completed by ${user.tag}`, {
+          amount: amount.toString(),
+          currency,
+          guildId: interaction.guild.id,
+        });
+
+        await interaction.editReply({
+          content: `${
+            EMOJIS.win
+          } Thank you for your generous donation of **${formatAmount(
+            amount
+          )} ${currency.toUpperCase()}** to the server event pool!`,
+        });
+      } catch (error) {
+        logger.error(
+          "DonateCommand",
+          `Error processing donation: ${error.message}`,
+          error
+        );
+        return interaction.editReply({
+          content: `❌ An error occurred while processing your donation: ${error.message}`,
+        });
+      }
     } catch (error) {
-      console.error("Error in /donate command:", error);
+      logger.error("DonateCommand", `General error: ${error.message}`, error);
       const replyMethod =
         interaction.replied || interaction.deferred ? "editReply" : "reply";
       await interaction[replyMethod]({
@@ -99,10 +142,24 @@ module.exports = {
         return message.reply("❌ Invalid currency. Must be 'osrs' or 'rs3'.");
       }
 
-      console.log(`[RUN] !donate by ${user.tag} for ${rawAmount} ${currency}`);
+      logger.info(
+        "DonateCommand",
+        `Donation requested by ${user.tag} for ${rawAmount} ${currency}`
+      );
 
-      const amount = parseAmount(rawAmount);
-      if (amount <= 0n) {
+      // Parse amount safely - UPDATED TO MATCH YOUR EXISTING IMPLEMENTATION
+      let amount;
+      try {
+        amount = parseAmount(rawAmount);
+        if (!amount || amount <= 0n) {
+          return message.reply("❌ Invalid amount format.");
+        }
+      } catch (error) {
+        logger.error(
+          "DonateCommand",
+          `Error parsing amount: ${error.message}`,
+          { rawAmount }
+        );
         return message.reply("❌ Invalid amount format.");
       }
 
@@ -113,30 +170,61 @@ module.exports = {
         );
       }
 
-      const serverWallet = await getServerWallet(message.guild.id);
+      // Ensure we have a valid guild ID
+      if (!message.guild || !message.guild.id) {
+        return message.reply("❌ This command can only be used in a server.");
+      }
 
-      userWallet[currency] -= amount;
-      serverWallet[currency] += amount;
+      try {
+        // Get server wallet with the guild ID
+        const serverWallet = await getServerWallet(message.guild.id);
 
-      await updateWallet(user.id, userWallet);
-      await updateServerWallet(message.guild.id, serverWallet);
+        // Update wallets with safe BigInt operations
+        userWallet[currency] = BigInt(userWallet[currency]) - BigInt(amount);
+        serverWallet[currency] =
+          BigInt(serverWallet[currency]) + BigInt(amount);
 
-      // Log the donation for the leaderboard
-      await updateDonationStats(user.id, currency, amount);
+        await updateWallet(user.id, userWallet);
+        await updateServerWallet(message.guild.id, serverWallet);
 
-      await message.reply(
-        `${EMOJIS.win} Thank you for your generous donation of **${formatAmount(
-          amount
-        )} ${currency.toUpperCase()}** to the server event pool!`
-      );
+        // Log the donation for the leaderboard
+        await updateDonationStats(user.id, currency, amount);
+
+        logger.info("DonateCommand", `Donation completed by ${user.tag}`, {
+          amount: amount.toString(),
+          currency,
+          guildId: message.guild.id,
+        });
+
+        await message.reply(
+          `${
+            EMOJIS.win
+          } Thank you for your generous donation of **${formatAmount(
+            amount
+          )} ${currency.toUpperCase()}** to the server event pool!`
+        );
+      } catch (error) {
+        logger.error(
+          "DonateCommand",
+          `Error processing donation: ${error.message}`,
+          error
+        );
+        return message.reply(
+          `❌ An error occurred while processing your donation: ${error.message}`
+        );
+      }
     } catch (error) {
-      console.error("Error in !donate command:", error);
+      logger.error(
+        "DonateCommand",
+        `General error in prefix command: ${error.message}`,
+        error
+      );
       await message.reply(
         "❌ An error occurred while processing your donation."
       );
     }
   },
-};
 
-// This command allows users to donate their in-game funds to the server event pool.
-// It checks the user's wallet, validates the donation amount, and updates both the user's and server's wallets.
+  // Command aliases
+  aliases: ["don"],
+};

@@ -21,7 +21,7 @@ module.exports = {
         .setDescription("The color that was rolled")
         .setRequired(true)
         .addChoices(
-          { name: "Red (HOT)", value: "red" },
+          { name: `${EMOJIS.REDFIRE || "(HOT)"}`, value: "red" },
           { name: "Orange (HOT)", value: "orange" },
           { name: "Yellow (HOT)", value: "yellow" },
           { name: "Black (HOT)", value: "black" },

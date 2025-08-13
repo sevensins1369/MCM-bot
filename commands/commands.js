@@ -34,9 +34,9 @@ module.exports = {
               "• `/wallet` or  `.bal` - View your wallet\n" +
               "• `/viewwallet` or `.view <user>` - View another user wallet\n" +
               "• `/send` or `.send <user> <amount> <currency>` - Send balance to a user\n" +
-              "• `/swap` or `.swap <direction> <amount>` - Swap between 07 and RS3 currencies\n" +
+              "• `/swap` or `.swap <direction> <amount>` - Swap between osrs and RS3 currencies\n" +
               "• `/lock-wallet` or `.lock [duration]` - Lock/unlock wallet\n" +
-              "• `/set-default` or `.default <currency>` - Set wallet default 07 or rs3\n" +
+              "• `/set-default` or `.default <currency>` - Set wallet default osrs or rs3\n" +
               "• `/wallet-privacy` or `.privacy <status>` - Set wallet privacy",
           },
           {
@@ -55,7 +55,7 @@ module.exports = {
           {
             name: "Leaderboard Commands",
             value:
-              "• `/leaderboard-07` or `.lb07 <timeframe> <category>` - View 07 leaderboard\n" +
+              "• `/leaderboard-07` or `.lbosrs <timeframe> <category>` - View osrs leaderboard\n" +
               "• `/leaderboard-rs3` or `.lbrs3 <timeframe> <category>` - View RS3 leaderboard\n" +
               "• `/donator-leaderboard` or `.donators` - View top donators\n" +
               "• `/flower-leaderboard` or `.flb <currency> <timeframe> <category>` - View flower games leaderboard\n" +
@@ -309,9 +309,9 @@ module.exports = {
               "• `/wallet` or  `.bal` - View your wallet\n" +
               "• `/viewwallet` or `.view <user>` - View another user wallet\n" +
               "• `/send` or `.send <user> <amount> <currency>` - Send balance to a user\n" +
-              "• `/swap` or `.swap <direction> <amount>` - Swap between 07 and RS3 currencies\n" +
+              "• `/swap` or `.swap <direction> <amount>` - Swap between osrs and RS3 currencies\n" +
               "• `/lock-wallet` or `lock [duration]` - Lock/unlock wallet\n" +
-              "• `/set-default` or `.default <currency>` - Set wallet default 07 or rs3\n" +
+              "• `/set-default` or `.default <currency>` - Set wallet default osrs or rs3\n" +
               "• `/wallet-privacy` or `.privacy <status>` - Set wallet privacy",
           },
           {
@@ -330,7 +330,7 @@ module.exports = {
           {
             name: "Leaderboard Commands",
             value:
-              "• `/leaderboard-07` or `.lb07 <timeframe> <category>` - View 07 leaderboard\n" +
+              "• `/leaderboard-07` or `.lbosrs <timeframe> <category>` - View osrs leaderboard\n" +
               "• `/leaderboard-rs3` or `.lbrs3 <timeframe> <category>` - View RS3 leaderboard\n" +
               "• `/donator-leaderboard` or `.donators` - View top donators\n" +
               "• `/flower-leaderboard` or `.flb <currency> <timeframe> <category>` - View flower games leaderboard\n" +
@@ -348,14 +348,14 @@ module.exports = {
 
       const bettingEmbed = new EmbedBuilder()
         .setColor(0xf44336)
-        .setTitle(`${EMOJIS.bet} Betting Commands`)
+        .setTitle(`${EMOJIS.bet} Game Commands`)
         .addFields(
           {
             name: "Duels",
             value:
-              "• `/bet` or `.bet <host> <amount> <currency> <duel_type>` - Place a bet on a duel\n" +
-              "• `/duel-streak` or `.streak [user]` - View duel win streaks\n" +
-              "• `/pot` or `.pot [user]` - View all bets on your duel",
+              "• `/bet` or `.b <host> <amount> <currency/skip if default> <whip/poly>` - Place a bet on a duel\n" +
+              "• `/duel-streak` or `.streak <host>` - View duel win streaks\n" +
+              "• `/pot` or `.pot <host>` - View all bets on a duel",
           },
           {
             name: "Dicing/diceduel",
@@ -405,7 +405,7 @@ module.exports = {
               "• `/dicetable <subcommand>` - Manage your dice table\n" +
               "• `.dopen` - Open a dice table\n" +
               "• `.dclose` - Close a dice table\n" +
-              "• `.dtoggle` - Toggle betting open/closed\n" +
+              "• `.dt` - Toggle betting open/closed\n" +
               "• `/rollresult` or `.rr <roll>` - Enter your dice roll result",
           },
           {
@@ -445,7 +445,8 @@ module.exports = {
           {
             name: "Server Management",
             value:
-              "• `/trigger` or `.trigger <subcommand> [name] [response]` - Manage custom text triggers",
+              "• `/trigger` or `.trigger <subcommand> [name] [response]` - Manage custom text triggers\n" +
+              "• `/adminfixstats` or `.fix` - Fix stats for a hosts streak if they are incorrect",
           }
         );
 
@@ -459,7 +460,7 @@ module.exports = {
           case "lb":
             embedToShow = leaderboardEmbed;
             break;
-          case "betting":
+          case "games":
           case "bet":
             embedToShow = bettingEmbed;
             break;
@@ -484,7 +485,7 @@ module.exports = {
         content:
           `${message.author}, use these commands to see other categories:\n` +
           `• \`!commands general\` - General commands\n` +
-          `• \`!commands leaderboard\` - Leaderboard commands\n` +
+          `• \`!commands lb\` - Leaderboard commands\n` +
           `• \`!commands games\` - game commands` +
           (isHost || isAdmin ? `\n• \`!commands host\` - Host commands` : "") +
           (isAdmin ? `\n• \`!commands admin\` - Admin commands` : ""),

@@ -4,6 +4,7 @@ const { getWallet, updateWallet } = require("../utils/WalletManager");
 const { formatAmount, EMOJIS } = require("../utils/embedcreator");
 const { parseAmount } = require("../utils/amountParser");
 const { getDefaultCurrency } = require("../utils/UserPreferencesManager");
+const { logger } = require("../enhanced-logger");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -46,7 +47,7 @@ module.exports = {
         try {
           currency = await getDefaultCurrency(interaction.user.id);
         } catch (error) {
-          console.error("Error getting default currency:", error);
+          logger.error("SendCommand", "Error getting default currency", error);
           currency = "osrs"; // Fallback to osrs
         }
       }
@@ -71,10 +72,26 @@ module.exports = {
         return interaction.editReply({ content: `❌ ${parsedAmount.error}` });
       }
 
-      const amount = parsedAmount.value;
+      // Safely convert to BigInt
+      let amount;
+      try {
+        amount = BigInt(parsedAmount.value);
+      } catch (error) {
+        logger.error(
+          "SendCommand",
+          `Error converting amount to BigInt: ${error.message}`,
+          {
+            rawAmount,
+            parsedValue: parsedAmount.value,
+          }
+        );
+        return interaction.editReply({
+          content: "❌ Invalid amount format.",
+        });
+      }
 
       // Check if amount is positive
-      if (amount <= 0) {
+      if (amount <= 0n) {
         return interaction.editReply({
           content: "❌ Amount must be greater than 0.",
         });
@@ -92,7 +109,7 @@ module.exports = {
       }
 
       // Check if sender has enough funds
-      if (senderWallet[currency] < amount) {
+      if (BigInt(senderWallet[currency]) < amount) {
         return interaction.editReply({
           content: `❌ You don't have enough ${currency.toUpperCase()} to send. Your balance: ${formatAmount(
             senderWallet[currency]
@@ -103,9 +120,26 @@ module.exports = {
       // Get recipient's wallet
       const recipientWallet = await getWallet(recipient.id);
 
-      // Update wallets
-      senderWallet[currency] -= amount;
-      recipientWallet[currency] += amount;
+      // Update wallets with safe BigInt operations
+      try {
+        senderWallet[currency] = BigInt(senderWallet[currency]) - amount;
+        recipientWallet[currency] = BigInt(recipientWallet[currency]) + amount;
+      } catch (error) {
+        logger.error(
+          "SendCommand",
+          `Error in BigInt operations: ${error.message}`,
+          {
+            senderId: sender.id,
+            recipientId: recipient.id,
+            amount: amount.toString(),
+            currency,
+          }
+        );
+        return interaction.editReply({
+          content:
+            "❌ An error occurred during the currency transfer calculation.",
+        });
+      }
 
       // Save updated wallets
       await updateWallet(sender.id, senderWallet);
@@ -152,12 +186,31 @@ module.exports = {
 
         await recipient.send({ embeds: [notificationEmbed] }).catch(() => {
           // Silently fail if user has DMs disabled
+          logger.info(
+            "SendCommand",
+            `Could not send DM to ${recipient.tag} - DMs may be disabled`
+          );
         });
       } catch (error) {
-        console.error("Failed to send DM to recipient:", error);
+        logger.error(
+          "SendCommand",
+          `Failed to send DM to recipient: ${error.message}`,
+          error
+        );
       }
+
+      logger.info(
+        "SendCommand",
+        `${sender.tag} sent ${formatAmount(
+          amount
+        )} ${currency.toUpperCase()} to ${recipient.tag}`
+      );
     } catch (error) {
-      console.error("Error in /send command:", error);
+      logger.error(
+        "SendCommand",
+        `Error in /send command: ${error.message}`,
+        error
+      );
       const replyMethod =
         interaction.replied || interaction.deferred ? "editReply" : "reply";
       await interaction[replyMethod]({
@@ -202,7 +255,7 @@ module.exports = {
         try {
           currency = await getDefaultCurrency(message.author.id);
         } catch (error) {
-          console.error("Error getting default currency:", error);
+          logger.error("SendCommand", "Error getting default currency", error);
           currency = "osrs"; // Fallback to osrs
         }
       }
@@ -223,10 +276,24 @@ module.exports = {
         return message.reply(`❌ ${parsedAmount.error}`);
       }
 
-      const amount = parsedAmount.value;
+      // Safely convert to BigInt
+      let amount;
+      try {
+        amount = BigInt(parsedAmount.value);
+      } catch (error) {
+        logger.error(
+          "SendCommand",
+          `Error converting amount to BigInt: ${error.message}`,
+          {
+            rawAmount,
+            parsedValue: parsedAmount.value,
+          }
+        );
+        return message.reply("❌ Invalid amount format.");
+      }
 
       // Check if amount is positive
-      if (amount <= 0) {
+      if (amount <= 0n) {
         return message.reply("❌ Amount must be greater than 0.");
       }
 
@@ -241,7 +308,7 @@ module.exports = {
       }
 
       // Check if sender has enough funds
-      if (senderWallet[currency] < amount) {
+      if (BigInt(senderWallet[currency]) < amount) {
         return message.reply(
           `❌ You don't have enough ${currency.toUpperCase()} to send. Your balance: ${formatAmount(
             senderWallet[currency]
@@ -252,9 +319,25 @@ module.exports = {
       // Get recipient's wallet
       const recipientWallet = await getWallet(recipient.id);
 
-      // Update wallets
-      senderWallet[currency] -= amount;
-      recipientWallet[currency] += amount;
+      // Update wallets with safe BigInt operations
+      try {
+        senderWallet[currency] = BigInt(senderWallet[currency]) - amount;
+        recipientWallet[currency] = BigInt(recipientWallet[currency]) + amount;
+      } catch (error) {
+        logger.error(
+          "SendCommand",
+          `Error in BigInt operations: ${error.message}`,
+          {
+            senderId: sender.id,
+            recipientId: recipient.id,
+            amount: amount.toString(),
+            currency,
+          }
+        );
+        return message.reply(
+          "❌ An error occurred during the currency transfer calculation."
+        );
+      }
 
       // Save updated wallets
       await updateWallet(sender.id, senderWallet);
@@ -301,16 +384,35 @@ module.exports = {
 
         await recipient.send({ embeds: [notificationEmbed] }).catch(() => {
           // Silently fail if user has DMs disabled
+          logger.info(
+            "SendCommand",
+            `Could not send DM to ${recipient.tag} - DMs may be disabled`
+          );
         });
       } catch (error) {
-        console.error("Failed to send DM to recipient:", error);
+        logger.error(
+          "SendCommand",
+          `Failed to send DM to recipient: ${error.message}`,
+          error
+        );
       }
+
+      logger.info(
+        "SendCommand",
+        `${sender.tag} sent ${formatAmount(
+          amount
+        )} ${currency.toUpperCase()} to ${recipient.tag}`
+      );
     } catch (error) {
-      console.error("Error in !send command:", error);
+      logger.error(
+        "SendCommand",
+        `Error in !send command: ${error.message}`,
+        error
+      );
       await message.reply("❌ An error occurred while sending currency.");
     }
   },
 };
 
-// This command allows users to send RS3 or 07 coins to another user.
+// This command allows users to send RS3 or osrs coins to another user.
 // It validates the recipient, checks the sender's balance, and updates both wallets accordingly.

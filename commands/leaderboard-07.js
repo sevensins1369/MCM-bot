@@ -6,7 +6,7 @@ const { formatAmount, EMOJIS } = require("../utils/embedcreator");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("leaderboard-07")
-    .setDescription("View the 07 leaderboard.")
+    .setDescription("View the osrs leaderboard.")
     .addStringOption((option) =>
       option
         .setName("timeframe")
@@ -66,28 +66,28 @@ module.exports = {
         case "profit":
           sortField = `${timeframe}.osrsProfit`;
           displayField = "osrsProfit";
-          title = "Top 07 Profit";
+          title = "Top osrs Profit";
           break;
         case "wagered":
           sortField = `${timeframe}.osrsWagered`;
           displayField = "osrsWagered";
-          title = "Top 07 Wagered";
+          title = "Top osrs Wagered";
           break;
         case "losses":
           sortField = `${timeframe}.osrsProfit`;
           sortDirection = 1; // Ascending for losses
           displayField = "osrsProfit";
-          title = "Top 07 Losses";
+          title = "Top osrs Losses";
           break;
         case "bets":
           sortField = `${timeframe}.betsWon`;
           displayField = "betsWon";
-          title = "Most 07 Bets";
+          title = "Most osrs Bets";
           break;
         case "donations":
           sortField = `${timeframe}.osrsDonated`;
           displayField = "osrsDonated";
-          title = "Top 07 Donators";
+          title = "Top osrs Donators";
           break;
         default:
           return interaction.editReply("Invalid category.");
@@ -204,28 +204,28 @@ module.exports = {
         case "profit":
           sortField = `${timeframe}.osrsProfit`;
           displayField = "osrsProfit";
-          title = "Top 07 Profit";
+          title = "Top osrs Profit";
           break;
         case "wagered":
           sortField = `${timeframe}.osrsWagered`;
           displayField = "osrsWagered";
-          title = "Top 07 Wagered";
+          title = "Top osrs Wagered";
           break;
         case "losses":
           sortField = `${timeframe}.osrsProfit`;
           sortDirection = 1; // Ascending for losses
           displayField = "osrsProfit";
-          title = "Top 07 Losses";
+          title = "Top osrs Losses";
           break;
         case "bets":
           sortField = `${timeframe}.betsWon`;
           displayField = "betsWon";
-          title = "Most 07 Bets";
+          title = "Most osrs Bets";
           break;
         case "donations":
           sortField = `${timeframe}.osrsDonated`;
           displayField = "osrsDonated";
-          title = "Top 07 Donators";
+          title = "Top osrs Donators";
           break;
       }
 
@@ -283,6 +283,6 @@ module.exports = {
     }
   },
 };
-// This command retrieves and displays the 07 leaderboard for various categories and timeframes.
-// This module defines the 07 leaderboards command for Discord.
+// This command retrieves and displays the osrs leaderboard for various categories and timeframes.
+// This module defines the osrs leaderboards command for Discord.
 // It allows users to view leaderboards for various categories and timeframes.

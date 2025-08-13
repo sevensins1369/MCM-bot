@@ -16,7 +16,7 @@ module.exports = {
 
       try {
         const defaultCurrency = await getDefaultCurrency(userId);
-        const currencyDisplay = defaultCurrency === "osrs" ? "07" : "RS3";
+        const currencyDisplay = defaultCurrency === "osrs" ? "osrs" : "RS3";
 
         await interaction.editReply({
           content: `${EMOJIS.stash} Your default currency is set to **${currencyDisplay}**. This is used when you don't specify a currency in betting and sending commands.`,
@@ -25,7 +25,7 @@ module.exports = {
         console.error("Error getting default currency:", error);
         await interaction.editReply({
           content:
-            "❌ Could not retrieve your default currency. It has been reset to 07.",
+            "❌ Could not retrieve your default currency. It has been reset to osrs.",
         });
       }
     } catch (error) {
@@ -46,7 +46,7 @@ module.exports = {
 
       try {
         const defaultCurrency = await getDefaultCurrency(userId);
-        const currencyDisplay = defaultCurrency === "osrs" ? "07" : "RS3";
+        const currencyDisplay = defaultCurrency === "osrs" ? "osrs" : "RS3";
 
         await message.reply(
           `${EMOJIS.stash} Your default currency is set to **${currencyDisplay}**. This is used when you don't specify a currency in betting and sending commands.`
@@ -54,7 +54,7 @@ module.exports = {
       } catch (error) {
         console.error("Error getting default currency:", error);
         await message.reply(
-          "❌ Could not retrieve your default currency. It has been reset to 07."
+          "❌ Could not retrieve your default currency. It has been reset to osrs."
         );
       }
     } catch (error) {

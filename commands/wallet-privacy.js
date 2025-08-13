@@ -10,36 +10,40 @@ module.exports = {
     .addStringOption((option) =>
       option
         .setName("status")
-        .setDescription("Set your wallet to public or private.")
+        .setDescription("Set your wallet to private or public.")
         .setRequired(true)
         .addChoices(
-          { name: "Private (Hidden from others)", value: "private" },
-          { name: "Public (Visible to others)", value: "public" }
+          { name: "On (Private - Only visible to you)", value: "on" },
+          { name: "Off (Public - Visible to everyone)", value: "off" }
         )
     ),
 
   async execute(interaction) {
     try {
       await interaction.deferReply({ ephemeral: true });
-      const newStatus = interaction.options.getString("status");
+      const status = interaction.options.getString("status");
       console.log(
-        `[EXECUTE] /wallet-privacy set to ${newStatus} by ${interaction.user.tag}`
+        `[EXECUTE] /wallet-privacy set to ${status} by ${interaction.user.tag}`
       );
 
-      const isPrivate = newStatus === "private";
+      const isPrivate = status === "on";
       const wallet = await getWallet(interaction.user.id);
 
       if (wallet.isPrivate === isPrivate) {
         return interaction.editReply({
-          content: `Your wallet is already set to **${newStatus}**.`,
+          content: `Your wallet privacy is already turned **${status}**.`,
         });
       }
 
       wallet.isPrivate = isPrivate;
       await updateWallet(interaction.user.id, wallet);
 
+      const privacyExplanation = isPrivate
+        ? "Your wallet will now be shown only to you (as ephemeral messages in channels and DMs for prefix commands)."
+        : "Your wallet will now be visible to everyone in the channel.";
+
       await interaction.editReply({
-        content: `${EMOJIS.win} Your wallet privacy has been updated to **${newStatus}**.`,
+        content: `${EMOJIS.win} Your wallet privacy has been turned **${status}**.\n\n${privacyExplanation}`,
       });
     } catch (error) {
       console.error("Error in /wallet-privacy command:", error);
@@ -57,40 +61,54 @@ module.exports = {
     try {
       if (args.length < 1) {
         return message.reply(
-          "❌ Please specify a privacy setting. Usage: `!wallet-privacy <public/private>`"
+          "❌ Please specify a privacy setting. Usage: `!wallet-privacy <on/off>`"
         );
       }
 
-      const newStatusInput = args[0].toLowerCase();
-      let newStatus;
+      const statusInput = args[0].toLowerCase();
+      let status;
 
-      if (newStatusInput === "private" || newStatusInput === "p") {
-        newStatus = "private";
-      } else if (newStatusInput === "public" || newStatusInput === "pub") {
-        newStatus = "public";
+      if (
+        statusInput === "on" ||
+        statusInput === "private" ||
+        statusInput === "p"
+      ) {
+        status = "on";
+      } else if (
+        statusInput === "off" ||
+        statusInput === "public" ||
+        statusInput === "pub"
+      ) {
+        status = "off";
       } else {
         return message.reply(
-          "❌ Invalid privacy setting. Please use 'public' or 'private'."
+          "❌ Invalid privacy setting. Please use 'on' or 'off'."
         );
       }
 
       console.log(
-        `[RUN] !wallet-privacy set to ${newStatus} by ${message.author.tag}`
+        `[RUN] !wallet-privacy set to ${status} by ${message.author.tag}`
       );
 
-      const isPrivate = newStatus === "private";
+      const isPrivate = status === "on";
       const wallet = await getWallet(message.author.id);
 
       if (wallet.isPrivate === isPrivate) {
-        return message.reply(`Your wallet is already set to **${newStatus}**.`);
+        return message.reply({
+          content: `Your wallet privacy is already turned **${status}**.`,
+        });
       }
 
       wallet.isPrivate = isPrivate;
       await updateWallet(message.author.id, wallet);
 
-      await message.reply(
-        `${EMOJIS.win} Your wallet privacy has been updated to **${newStatus}**.`
-      );
+      const privacyExplanation = isPrivate
+        ? "Your wallet will now be shown only to you (sent to your DMs when using prefix commands)."
+        : "Your wallet will now be visible to everyone in the channel.";
+
+      await message.reply({
+        content: `${EMOJIS.win} Your wallet privacy has been turned **${status}**.\n\n${privacyExplanation}`,
+      });
     } catch (error) {
       console.error("Error in !wallet-privacy command:", error);
       await message.reply(
@@ -98,7 +116,7 @@ module.exports = {
       );
     }
   },
-};
 
-// This command allows users to toggle the privacy of their wallet.
-// It updates the user's wallet settings in the database and provides feedback on the change.
+  // Command aliases
+  aliases: ["wp", "privacy"],
+};

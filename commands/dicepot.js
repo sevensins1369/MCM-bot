@@ -65,7 +65,7 @@ module.exports = {
         .setColor(0xdaa520)
         .setTitle(`${EMOJIS.dice} Dicing Table Bets for ${host.username}`)
         .setDescription(
-          `**Total Bets:** ${totalBets}\n**07 Pot:** ${formatAmount(
+          `**Total Bets:** ${totalBets}\n**osrs Pot:** ${formatAmount(
             totalAmountOsrs
           )}\n**RS3 Pot:** ${formatAmount(totalAmountRs3)}`
         )
@@ -154,7 +154,7 @@ module.exports = {
         .setColor(0xdaa520)
         .setTitle(`${EMOJIS.dice} Dicing Table Bets for ${host.username}`)
         .setDescription(
-          `**Total Bets:** ${totalBets}\n**07 Pot:** ${formatAmount(
+          `**Total Bets:** ${totalBets}\n**osrs Pot:** ${formatAmount(
             totalAmountOsrs
           )}\n**RS3 Pot:** ${formatAmount(totalAmountRs3)}`
         )

@@ -141,7 +141,7 @@ module.exports = {
 
         if (totalOsrs > 0n) {
           embed.addFields({
-            name: "Total 07 Bets",
+            name: "Total osrs Bets",
             value: formatAmount(totalOsrs),
             inline: true,
           });
@@ -166,7 +166,7 @@ module.exports = {
           let winMessage = `<@${winner.playerId}> wins `;
 
           if (winner.osrsWinnings > 0n) {
-            winMessage += `${formatAmount(winner.osrsWinnings)} 07`;
+            winMessage += `${formatAmount(winner.osrsWinnings)} osrs`;
           }
 
           if (winner.rs3Winnings > 0n) {
@@ -312,7 +312,7 @@ module.exports = {
 
         if (totalOsrs > 0n) {
           embed.addFields({
-            name: "Total 07 Bets",
+            name: "Total osrs Bets",
             value: formatAmount(totalOsrs),
             inline: true,
           });
@@ -337,7 +337,7 @@ module.exports = {
           let winMessage = `<@${winner.playerId}> wins `;
 
           if (winner.osrsWinnings > 0n) {
-            winMessage += `${formatAmount(winner.osrsWinnings)} 07`;
+            winMessage += `${formatAmount(winner.osrsWinnings)} osrs`;
           }
 
           if (winner.rs3Winnings > 0n) {

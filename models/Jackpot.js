@@ -1,111 +1,115 @@
 // models/Jackpot.js
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const JackpotSchema = new mongoose.Schema({
   gameId: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   status: {
     type: String,
-    enum: ['active', 'drawing', 'completed', 'cancelled'],
-    default: 'active'
+    enum: ["active", "drawing", "completed", "cancelled"],
+    default: "active",
   },
   startTime: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   endTime: {
     type: Date,
-    default: null
+    default: null,
   },
   drawTime: {
     type: Date,
-    required: true
+    required: true,
   },
   currency: {
     type: String,
-    enum: ['osrs', 'rs3'],
-    required: true
+    enum: ["osrs", "rs3"],
+    required: true,
   },
   minEntryAmount: {
     type: String, // Using string to handle large numbers
-    required: true
+    required: true,
   },
   totalPot: {
     type: String, // Using string to handle large numbers
-    default: '0'
+    default: "0",
   },
-  entries: [{
-    userId: {
-      type: String,
-      required: true
+  entries: [
+    {
+      userId: {
+        type: String,
+        required: true,
+      },
+      username: {
+        type: String,
+        required: true,
+      },
+      amount: {
+        type: String, // Using string to handle large numbers
+        required: true,
+      },
+      entryTime: {
+        type: Date,
+        default: Date.now,
+      },
+      tickets: {
+        type: Number,
+        required: true,
+      },
     },
-    username: {
-      type: String,
-      required: true
-    },
-    amount: {
-      type: String, // Using string to handle large numbers
-      required: true
-    },
-    entryTime: {
-      type: Date,
-      default: Date.now
-    },
-    tickets: {
-      type: Number,
-      required: true
-    }
-  }],
+  ],
   winner: {
     userId: {
       type: String,
-      default: null
+      default: null,
     },
     username: {
       type: String,
-      default: null
+      default: null,
     },
     amount: {
       type: String, // Using string to handle large numbers
-      default: null
+      default: null,
     },
     winningTicket: {
       type: Number,
-      default: null
+      default: null,
     },
     totalTickets: {
       type: Number,
-      default: null
-    }
+      default: null,
+    },
   },
   messageId: {
     type: String,
-    default: null
+    default: null,
   },
   channelId: {
     type: String,
-    default: null
+    default: null,
   },
   serverId: {
     type: String,
-    default: null
+    default: null,
   },
   createdBy: {
     type: String,
-    required: true
-  }
+    required: true,
+  },
 });
 
 // Create indexes for better performance
 JackpotSchema.index({ gameId: 1 });
 JackpotSchema.index({ status: 1 });
 JackpotSchema.index({ drawTime: 1 });
-JackpotSchema.index({ 'entries.userId': 1 });
+JackpotSchema.index({ "entries.userId": 1 });
 
-const Jackpot = mongoose.connection.readyState === 1 ? 
-  (mongoose.models.Jackpot || mongoose.model('Jackpot', JackpotSchema)) : null;
+const Jackpot =
+  mongoose.connection.readyState === 1
+    ? mongoose.models.Jackpot || mongoose.model("Jackpot", JackpotSchema)
+    : null;
 
 module.exports = Jackpot;

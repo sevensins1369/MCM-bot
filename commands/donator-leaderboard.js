@@ -36,7 +36,7 @@ module.exports = {
           )}**`;
         })
         .join("\n");
-      if (!osrsText) osrsText = "No 07 donations yet.";
+      if (!osrsText) osrsText = "No osrs donations yet.";
 
       let rs3Text = topRs3Donators
         .map((stat, index) => {
@@ -48,7 +48,7 @@ module.exports = {
       if (!rs3Text) rs3Text = "No RS3 donations yet.";
 
       embed.addFields(
-        { name: "Top 07 Donators", value: osrsText, inline: true },
+        { name: "Top osrs Donators", value: osrsText, inline: true },
         { name: "Top RS3 Donators", value: rs3Text, inline: true }
       );
 
@@ -89,7 +89,7 @@ module.exports = {
           )}**`;
         })
         .join("\n");
-      if (!osrsText) osrsText = "No 07 donations yet.";
+      if (!osrsText) osrsText = "No osrs donations yet.";
 
       let rs3Text = topRs3Donators
         .map((stat, index) => {
@@ -101,7 +101,7 @@ module.exports = {
       if (!rs3Text) rs3Text = "No RS3 donations yet.";
 
       embed.addFields(
-        { name: "Top 07 Donators", value: osrsText, inline: true },
+        { name: "Top osrs Donators", value: osrsText, inline: true },
         { name: "Top RS3 Donators", value: rs3Text, inline: true }
       );
 
@@ -115,5 +115,5 @@ module.exports = {
   },
 };
 
-// This command retrieves and displays the top donators to the server wallet for both OSRS and RS3.
+// This command retrieves and displays the top donators to the server wallet for both osrs and RS3.
 // It formats the data into an embed and sends it as a reply to the user.

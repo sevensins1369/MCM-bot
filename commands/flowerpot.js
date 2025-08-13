@@ -75,7 +75,7 @@ module.exports = {
           value: game.isOpen ? "Open for Betting" : "Betting Closed",
           inline: true,
         },
-        { name: "OSRS Pot", value: formatAmount(totalOsrs), inline: true },
+        { name: "osrs Pot", value: formatAmount(totalOsrs), inline: true },
         { name: "RS3 Pot", value: formatAmount(totalRs3), inline: true },
         { name: "Total Bets", value: game.bets.length.toString(), inline: true }
       )
@@ -251,7 +251,7 @@ module.exports = {
             value: game.isOpen ? "Open for Betting" : "Betting Closed",
             inline: true,
           },
-          { name: "OSRS Pot", value: formatAmount(totalOsrs), inline: true },
+          { name: "osrs Pot", value: formatAmount(totalOsrs), inline: true },
           { name: "RS3 Pot", value: formatAmount(totalRs3), inline: true },
           {
             name: "Total Bets",

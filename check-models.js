@@ -1,22 +1,22 @@
 // check-models.js
 // This script checks for missing model files and creates them if needed
 
-const fs = require('fs');
-const path = require('path');
+const fs = require("fs");
+const path = require("path");
 
-console.log('Checking for missing model files...');
+console.log("Checking for missing model files...");
 
 // Ensure models directory exists
-const modelsDir = path.join(__dirname, 'models');
+const modelsDir = path.join(__dirname, "models");
 if (!fs.existsSync(modelsDir)) {
   fs.mkdirSync(modelsDir, { recursive: true });
-  console.log('Created models directory');
+  console.log("Created models directory");
 }
 
 // Define model files that should exist
 const requiredModels = [
   {
-    name: 'Wallet.js',
+    name: "Wallet.js",
     content: `// models/Wallet.js
 const mongoose = require('mongoose');
 
@@ -27,7 +27,7 @@ const WalletSchema = new mongoose.Schema({
     unique: true 
   },
   // Store large numbers as strings in the DB
-  osrs: { 
+  07: { 
     type: String, 
     default: '0' 
   },
@@ -59,10 +59,10 @@ WalletSchema.index({ userId: 1 });
 const Wallet = mongoose.connection.readyState === 1 ? 
   (mongoose.models.Wallet || mongoose.model('Wallet', WalletSchema)) : null;
 
-module.exports = Wallet;`
+module.exports = Wallet;`,
   },
   {
-    name: 'duel.js',
+    name: "duel.js",
     content: `// models/duel.js
 const mongoose = require('mongoose');
 
@@ -105,8 +105,8 @@ const DuelSchema = new mongoose.Schema({
     amount: String, // Using string to handle large numbers
     currency: {
       type: String,
-      enum: ['osrs', 'rs3'],
-      default: 'osrs'
+      enum: ['07', 'rs3'],
+      default: '07'
     },
     side: {
       type: String,
@@ -135,10 +135,10 @@ DuelSchema.index({ createdAt: -1 });
 const Duel = mongoose.connection.readyState === 1 ? 
   (mongoose.models.Duel || mongoose.model('Duel', DuelSchema)) : null;
 
-module.exports = Duel;`
+module.exports = Duel;`,
   },
   {
-    name: 'PlayerStats.js',
+    name: "PlayerStats.js",
     content: `// models/PlayerStats.js
 const mongoose = require('mongoose');
 
@@ -175,15 +175,15 @@ const PlayerStatsSchema = new mongoose.Schema({
     default: 0
   },
   // Currency stats (stored as strings to handle large numbers)
-  osrsWagered: {
+  07Wagered: {
     type: String,
     default: '0'
   },
-  osrsWon: {
+  07Won: {
     type: String,
     default: '0'
   },
-  osrsLost: {
+  07Lost: {
     type: String,
     default: '0'
   },
@@ -216,16 +216,16 @@ const PlayerStatsSchema = new mongoose.Schema({
 
 // Create indexes for better performance
 PlayerStatsSchema.index({ userId: 1 });
-PlayerStatsSchema.index({ osrsWagered: -1 });
+PlayerStatsSchema.index({ 07Wagered: -1 });
 PlayerStatsSchema.index({ rs3Wagered: -1 });
 
 const PlayerStats = mongoose.connection.readyState === 1 ? 
   (mongoose.models.PlayerStats || mongoose.model('PlayerStats', PlayerStatsSchema)) : null;
 
-module.exports = PlayerStats;`
+module.exports = PlayerStats;`,
   },
   {
-    name: 'UserPreferences.js',
+    name: "UserPreferences.js",
     content: `// models/UserPreferences.js
 const mongoose = require('mongoose');
 
@@ -237,8 +237,8 @@ const UserPreferencesSchema = new mongoose.Schema({
   },
   defaultCurrency: {
     type: String,
-    enum: ['osrs', 'rs3'],
-    default: 'osrs'
+    enum: ['07', 'rs3'],
+    default: '07'
   },
   twitchUsername: {
     type: String,
@@ -260,10 +260,10 @@ UserPreferencesSchema.index({ userId: 1 });
 const UserPreferences = mongoose.connection.readyState === 1 ? 
   (mongoose.models.UserPreferences || mongoose.model('UserPreferences', UserPreferencesSchema)) : null;
 
-module.exports = UserPreferences;`
+module.exports = UserPreferences;`,
   },
   {
-    name: 'trigger.js',
+    name: "trigger.js",
     content: `// models/trigger.js
 const mongoose = require('mongoose');
 
@@ -290,10 +290,10 @@ const TriggerSchema = new mongoose.Schema({
 const Trigger = mongoose.connection.readyState === 1 ? 
   (mongoose.models.Trigger || mongoose.model('Trigger', TriggerSchema)) : null;
 
-module.exports = Trigger;`
+module.exports = Trigger;`,
   },
   {
-    name: 'ServerWallet.js',
+    name: "ServerWallet.js",
     content: `// models/ServerWallet.js
 const mongoose = require('mongoose');
 
@@ -304,7 +304,7 @@ const ServerWalletSchema = new mongoose.Schema({
     unique: true
   },
   // Store large numbers as strings in the DB
-  osrs: {
+  07: {
     type: String,
     default: '0'
   },
@@ -324,10 +324,10 @@ ServerWalletSchema.index({ serverId: 1 });
 const ServerWallet = mongoose.connection.readyState === 1 ? 
   (mongoose.models.ServerWallet || mongoose.model('ServerWallet', ServerWalletSchema)) : null;
 
-module.exports = ServerWallet;`
+module.exports = ServerWallet;`,
   },
   {
-    name: 'Jackpot.js',
+    name: "Jackpot.js",
     content: `// models/Jackpot.js
 const mongoose = require('mongoose');
 
@@ -356,7 +356,7 @@ const JackpotSchema = new mongoose.Schema({
   },
   currency: {
     type: String,
-    enum: ['osrs', 'rs3'],
+    enum: ['07', 'rs3'],
     required: true
   },
   minEntryAmount: {
@@ -438,8 +438,8 @@ JackpotSchema.index({ 'entries.userId': 1 });
 const Jackpot = mongoose.connection.readyState === 1 ? 
   (mongoose.models.Jackpot || mongoose.model('Jackpot', JackpotSchema)) : null;
 
-module.exports = Jackpot;`
-  }
+module.exports = Jackpot;`,
+  },
 ];
 
 // Check each required model and create if missing
@@ -454,9 +454,9 @@ for (const model of requiredModels) {
 }
 
 if (createdCount === 0) {
-  console.log('All model files are present.');
+  console.log("All model files are present.");
 } else {
   console.log(`Created ${createdCount} missing model files.`);
 }
 
-console.log('Model check complete!');
+console.log("Model check complete!");

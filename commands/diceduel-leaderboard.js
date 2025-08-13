@@ -67,18 +67,29 @@ module.exports = {
     const page = interaction.options.getInteger("page") || 1;
     const skip = (page - 1) * limit;
 
-    let sortField, sortDirection = -1, displayField, title;
+    let sortField,
+      sortDirection = -1,
+      displayField,
+      title;
 
     // Determine sort field and display field based on category and currency
     switch (category) {
       case "profit":
-        sortField = `${timeframe}.diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
-        displayField = `diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+        sortField = `${timeframe}.diceDuel${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Profit`;
+        displayField = `diceDuel${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Profit`;
         title = `Top Dice Duel ${currency.toUpperCase()} Profit`;
         break;
       case "wagered":
-        sortField = `${timeframe}.diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-        displayField = `diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+        sortField = `${timeframe}.diceDuel${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
+        displayField = `diceDuel${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
         title = `Top Dice Duel ${currency.toUpperCase()} Wagered`;
         break;
       case "wins":
@@ -92,8 +103,12 @@ module.exports = {
         title = `Best Dice Duel Streak (${currency.toUpperCase()})`;
         break;
       default:
-        sortField = `${timeframe}.diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-        displayField = `diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+        sortField = `${timeframe}.diceDuel${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
+        displayField = `diceDuel${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
         title = `Top Dice Duel ${currency.toUpperCase()} Wagered`;
     }
 
@@ -107,7 +122,9 @@ module.exports = {
     );
 
     if (stats.length === 0) {
-      return interaction.editReply("No data found for this dice duel leaderboard.");
+      return interaction.editReply(
+        "No data found for this dice duel leaderboard."
+      );
     }
 
     // Create embed
@@ -134,7 +151,9 @@ module.exports = {
         }
 
         return `${position}. <@${stat.userId}> - **${
-          category === "wins" || category === "streak" ? value : formatAmount(value)
+          category === "wins" || category === "streak"
+            ? value
+            : formatAmount(value)
         }**`;
       })
       .join("\n");
@@ -158,15 +177,17 @@ module.exports = {
       if (args.length > 0) {
         // First arg could be currency
         const firstArg = args[0].toLowerCase();
-        if (["osrs", "07", "rs3"].includes(firstArg)) {
-          currency = firstArg === "07" ? "osrs" : firstArg;
+        if (["osrs", "osrs", "rs3"].includes(firstArg)) {
+          currency = firstArg === "osrs" ? "osrs" : firstArg;
           args.shift();
         }
 
         // Next arg could be timeframe
         if (args.length > 0) {
           const timeframeArg = args[0].toLowerCase();
-          if (["alltime", "daily", "weekly", "monthly"].includes(timeframeArg)) {
+          if (
+            ["alltime", "daily", "weekly", "monthly"].includes(timeframeArg)
+          ) {
             timeframe = timeframeArg === "alltime" ? "allTime" : timeframeArg;
             args.shift();
           }
@@ -196,18 +217,29 @@ module.exports = {
 
       const skip = (page - 1) * limit;
 
-      let sortField, sortDirection = -1, displayField, title;
+      let sortField,
+        sortDirection = -1,
+        displayField,
+        title;
 
       // Determine sort field and display field based on category and currency
       switch (category) {
         case "profit":
-          sortField = `${timeframe}.diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
-          displayField = `diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+          sortField = `${timeframe}.diceDuel${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Profit`;
+          displayField = `diceDuel${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Profit`;
           title = `Top Dice Duel ${currency.toUpperCase()} Profit`;
           break;
         case "wagered":
-          sortField = `${timeframe}.diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-          displayField = `diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+          sortField = `${timeframe}.diceDuel${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
+          displayField = `diceDuel${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
           title = `Top Dice Duel ${currency.toUpperCase()} Wagered`;
           break;
         case "wins":
@@ -221,8 +253,12 @@ module.exports = {
           title = `Best Dice Duel Streak (${currency.toUpperCase()})`;
           break;
         default:
-          sortField = `${timeframe}.diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-          displayField = `diceDuel${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+          sortField = `${timeframe}.diceDuel${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
+          displayField = `diceDuel${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
           title = `Top Dice Duel ${currency.toUpperCase()} Wagered`;
       }
 
@@ -263,7 +299,9 @@ module.exports = {
           }
 
           return `${position}. <@${stat.userId}> - **${
-            category === "wins" || category === "streak" ? value : formatAmount(value)
+            category === "wins" || category === "streak"
+              ? value
+              : formatAmount(value)
           }**`;
         })
         .join("\n");
@@ -272,7 +310,11 @@ module.exports = {
 
       await message.reply({ embeds: [embed] });
     } catch (error) {
-      logger.error("DiceDuelLeaderboard", "Error in !diceduel-leaderboard command", error);
+      logger.error(
+        "DiceDuelLeaderboard",
+        "Error in !diceduel-leaderboard command",
+        error
+      );
       await message.reply(
         "❌ An error occurred while fetching the dice duel leaderboard."
       );

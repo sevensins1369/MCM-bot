@@ -46,7 +46,7 @@ module.exports = {
         .setTitle(`${target.username}'s Wallet`)
         .addFields(
           {
-            name: "07 Balance:",
+            name: "osrs Balance:",
             value: `${formatAmount(osrs)} coins`,
             inline: true,
           },
@@ -120,7 +120,7 @@ module.exports = {
         .setTitle(`${target.username}'s Wallet`)
         .addFields(
           {
-            name: "07 Balance:",
+            name: "osrs Balance:",
             value: `${formatAmount(osrs)} coins`,
             inline: true,
           },
@@ -145,5 +145,5 @@ module.exports = {
   },
 };
 
-// This command allows users to view their wallet balances for RS3 and OSRS coins.
+// This command allows users to view their wallet balances for RS3 and osrs coins.
 // It fetches the user's wallet from the database, formats the balances, and sends an embed

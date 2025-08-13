@@ -110,13 +110,13 @@ module.exports = {
       const currencyInput = args[1].toLowerCase();
       let currency;
 
-      if (currencyInput === "07" || currencyInput === "osrs") {
+      if (currencyInput === "osrs" || currencyInput === "osrs") {
         currency = "osrs";
       } else if (currencyInput === "rs3") {
         currency = "rs3";
       } else {
         return message.reply(
-          "❌ Invalid currency. Please use '07', 'osrs', or 'rs3'."
+          "❌ Invalid currency. Please use 'osrs', 'osrs', or 'rs3'."
         );
       }
 

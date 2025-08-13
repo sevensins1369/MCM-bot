@@ -67,24 +67,39 @@ module.exports = {
     const page = interaction.options.getInteger("page") || 1;
     const skip = (page - 1) * limit;
 
-    let sortField, sortDirection = -1, displayField, title;
+    let sortField,
+      sortDirection = -1,
+      displayField,
+      title;
 
     // Determine sort field and display field based on category and currency
     switch (category) {
       case "profit":
-        sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
-        displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+        sortField = `${timeframe}.flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Profit`;
+        displayField = `flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Profit`;
         title = `Top Flower Games ${currency.toUpperCase()} Profit`;
         break;
       case "wagered":
-        sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-        displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+        sortField = `${timeframe}.flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
+        displayField = `flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
         title = `Top Flower Games ${currency.toUpperCase()} Wagered`;
         break;
       case "losses":
-        sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+        sortField = `${timeframe}.flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Profit`;
         sortDirection = 1; // Ascending for losses
-        displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+        displayField = `flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Profit`;
         title = `Top Flower Games ${currency.toUpperCase()} Losses`;
         break;
       case "games":
@@ -93,8 +108,12 @@ module.exports = {
         title = `Most Flower Games Played (${currency.toUpperCase()})`;
         break;
       default:
-        sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-        displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+        sortField = `${timeframe}.flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
+        displayField = `flower${
+          currency.charAt(0).toUpperCase() + currency.slice(1)
+        }Wagered`;
         title = `Top Flower Games ${currency.toUpperCase()} Wagered`;
     }
 
@@ -108,7 +127,9 @@ module.exports = {
     );
 
     if (stats.length === 0) {
-      return interaction.editReply("No data found for this flower games leaderboard.");
+      return interaction.editReply(
+        "No data found for this flower games leaderboard."
+      );
     }
 
     // Create embed
@@ -162,15 +183,17 @@ module.exports = {
       if (args.length > 0) {
         // First arg could be currency
         const firstArg = args[0].toLowerCase();
-        if (["osrs", "07", "rs3"].includes(firstArg)) {
-          currency = firstArg === "07" ? "osrs" : firstArg;
+        if (["osrs", "osrs", "rs3"].includes(firstArg)) {
+          currency = firstArg === "osrs" ? "osrs" : firstArg;
           args.shift();
         }
 
         // Next arg could be timeframe
         if (args.length > 0) {
           const timeframeArg = args[0].toLowerCase();
-          if (["alltime", "daily", "weekly", "monthly"].includes(timeframeArg)) {
+          if (
+            ["alltime", "daily", "weekly", "monthly"].includes(timeframeArg)
+          ) {
             timeframe = timeframeArg === "alltime" ? "allTime" : timeframeArg;
             args.shift();
           }
@@ -200,24 +223,39 @@ module.exports = {
 
       const skip = (page - 1) * limit;
 
-      let sortField, sortDirection = -1, displayField, title;
+      let sortField,
+        sortDirection = -1,
+        displayField,
+        title;
 
       // Determine sort field and display field based on category and currency
       switch (category) {
         case "profit":
-          sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
-          displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+          sortField = `${timeframe}.flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Profit`;
+          displayField = `flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Profit`;
           title = `Top Flower Games ${currency.toUpperCase()} Profit`;
           break;
         case "wagered":
-          sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-          displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+          sortField = `${timeframe}.flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
+          displayField = `flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
           title = `Top Flower Games ${currency.toUpperCase()} Wagered`;
           break;
         case "losses":
-          sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+          sortField = `${timeframe}.flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Profit`;
           sortDirection = 1; // Ascending for losses
-          displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Profit`;
+          displayField = `flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Profit`;
           title = `Top Flower Games ${currency.toUpperCase()} Losses`;
           break;
         case "games":
@@ -226,8 +264,12 @@ module.exports = {
           title = `Most Flower Games Played (${currency.toUpperCase()})`;
           break;
         default:
-          sortField = `${timeframe}.flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
-          displayField = `flower${currency.charAt(0).toUpperCase() + currency.slice(1)}Wagered`;
+          sortField = `${timeframe}.flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
+          displayField = `flower${
+            currency.charAt(0).toUpperCase() + currency.slice(1)
+          }Wagered`;
           title = `Top Flower Games ${currency.toUpperCase()} Wagered`;
       }
 
@@ -241,7 +283,9 @@ module.exports = {
       );
 
       if (stats.length === 0) {
-        return message.reply("No data found for this flower games leaderboard.");
+        return message.reply(
+          "No data found for this flower games leaderboard."
+        );
       }
 
       // Create embed
@@ -280,7 +324,11 @@ module.exports = {
 
       await message.reply({ embeds: [embed] });
     } catch (error) {
-      logger.error("FlowerLeaderboard", "Error in !flower-leaderboard command", error);
+      logger.error(
+        "FlowerLeaderboard",
+        "Error in !flower-leaderboard command",
+        error
+      );
       await message.reply(
         "❌ An error occurred while fetching the flower games leaderboard."
       );

@@ -105,7 +105,7 @@ module.exports = {
     const walletBalance = BigInt(challengerWallet[currency] || 0);
     if (walletBalance < amount) {
       throw new ValidationError(
-        `You don't have enough ${currency.toUpperCase()} to bet. Your balance: ${formatAmount(
+        `You don't have enough ${currency.toUpperCase()} to duel. Your balance: ${formatAmount(
           walletBalance
         )}`
       );
@@ -150,14 +150,14 @@ module.exports = {
       )
       .addFields(
         {
-          name: "Bet Amount",
+          name: "The buy-in:",
           value: `${formatAmount(amount)} ${currency.toUpperCase()}`,
           inline: true,
         },
         {
-          name: "How to Play",
+          name: "The run-down:",
           value:
-            "1. Opponent must click Accept\n2. Both players use `/diceduel-roll` to roll\n3. Highest roll wins!",
+            "1. Opponent must first accept.\n2. Both players use `.roll` to roll 1-100.\n3. Highest roll wins the loot!",
           inline: false,
         }
       )
@@ -203,7 +203,7 @@ module.exports = {
     try {
       if (args.length < 2) {
         return message.reply(
-          "❌ Invalid command usage. Format: `!diceduel <opponent> <amount> [currency]`"
+          "❌ Invalid command usage. Format: `.dd <opponent> <amount> [currency/ignore if default]`"
         );
       }
 
@@ -235,7 +235,7 @@ module.exports = {
 
       // Validate currency
       if (currency && currency !== "osrs" && currency !== "rs3") {
-        return message.reply("❌ Invalid currency. Must be 'osrs' or 'rs3'.");
+        return message.reply("❌ Invalid currency. Must be '07' or 'rs3'.");
       }
 
       // Prevent dueling self
@@ -281,7 +281,7 @@ module.exports = {
       const walletBalance = BigInt(challengerWallet[currency] || 0);
       if (walletBalance < amount) {
         return message.reply(
-          `❌ You don't have enough ${currency.toUpperCase()} to bet. Your balance: ${formatAmount(
+          `❌ You don't have enough ${currency.toUpperCase()} to duel. Your balance: ${formatAmount(
             walletBalance
           )}`
         );
@@ -291,7 +291,7 @@ module.exports = {
       const existingDuel = getActiveDuelByPlayer(challenger.id);
       if (existingDuel) {
         return message.reply(
-          "❌ You already have an active dice duel. Cancel it first with `!diceduel-cancel`."
+          "❌ You already have an active dice duel. Cancel it first with `.ddc`."
         );
       }
 
@@ -326,14 +326,14 @@ module.exports = {
         )
         .addFields(
           {
-            name: "Bet Amount",
+            name: "The buy-in:",
             value: `${formatAmount(amount)} ${currency.toUpperCase()}`,
             inline: true,
           },
           {
-            name: "How to Play",
+            name: "The run-down:",
             value:
-              "1. Opponent must click Accept\n2. Both players use `/diceduel-roll` to roll\n3. Highest roll wins!",
+              "1. Opponent must first accept.\n2. Both players use `.roll` to roll 1-100.\n3. Highest roll wins the loot!",
             inline: false,
           }
         )
@@ -373,7 +373,7 @@ module.exports = {
         }
       );
     } catch (error) {
-      logger.error("DiceDuel", "Error in !diceduel command", error);
+      logger.error("DiceDuel", "Error in .diceduel command", error);
       await message.reply(`❌ An error occurred: ${error.message}`);
     }
   },

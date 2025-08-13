@@ -46,6 +46,8 @@ async function getPlayerStats(userId) {
           rs3Wagered: stats.rs3Wagered,
           rs3Won: stats.rs3Won,
           rs3Lost: stats.rs3Lost,
+          osrsDonated: stats.osrsDonated || "0", // Add donation fields
+          rs3Donated: stats.rs3Donated || "0", // Add donation fields
           lastPlayed: stats.lastPlayed,
           createdAt: stats.createdAt,
           updatedAt: stats.updatedAt,
@@ -74,6 +76,10 @@ function getStatsFromFile(userId) {
       const stats = JSON.parse(data);
 
       if (stats[userId]) {
+        // Add donation fields if they don't exist
+        if (!stats[userId].osrsDonated) stats[userId].osrsDonated = "0";
+        if (!stats[userId].rs3Donated) stats[userId].rs3Donated = "0";
+
         statsCache.set(userId, stats[userId]);
         return stats[userId];
       }
@@ -106,6 +112,8 @@ function createDefaultStats(userId) {
     rs3Wagered: "0",
     rs3Won: "0",
     rs3Lost: "0",
+    osrsDonated: "0", // Add donation fields
+    rs3Donated: "0", // Add donation fields
     lastPlayed: null,
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -167,6 +175,48 @@ async function updatePlayerStats(userId, updates) {
   } catch (error) {
     console.error(`Error updating stats for user ${userId}:`, error);
     throw error;
+  }
+}
+
+/**
+ * Update a user's donation stats
+ * @param {string} userId - The user's Discord ID
+ * @param {string} currency - The currency (osrs or rs3)
+ * @param {BigInt|string} amount - The donation amount
+ * @returns {Promise<Object>} Updated player stats
+ */
+async function updateDonationStats(userId, currency, amount) {
+  try {
+    // Validate inputs
+    if (!userId || !currency || !amount) {
+      console.warn(
+        "PlayerStatsManager",
+        "Missing required parameters for updateDonationStats"
+      );
+      return null;
+    }
+
+    // Convert amount to string if it's a BigInt
+    const amountStr = typeof amount === "bigint" ? amount.toString() : amount;
+
+    // Create updates object
+    const updates = {};
+
+    // Add donation to the appropriate currency field
+    // We'll create new fields for donations if they don't exist
+    const donationField = `${currency}Donated`;
+    updates[donationField] = amountStr;
+
+    // Update the player's stats
+    const updatedStats = await updatePlayerStats(userId, updates);
+
+    console.log(
+      `Updated donation stats for user ${userId}: ${amountStr} ${currency}`
+    );
+    return updatedStats;
+  } catch (error) {
+    console.error(`Error updating donation stats for user ${userId}:`, error);
+    return null;
   }
 }
 
@@ -332,6 +382,10 @@ function loadStats() {
       const stats = JSON.parse(data);
 
       Object.entries(stats).forEach(([userId, userStats]) => {
+        // Add donation fields if they don't exist
+        if (!userStats.osrsDonated) userStats.osrsDonated = "0";
+        if (!userStats.rs3Donated) userStats.rs3Donated = "0";
+
         statsCache.set(userId, userStats);
       });
 
@@ -357,7 +411,13 @@ function loadStats() {
  * @param {number} limit - Maximum number of records to return
  * @returns {Object} Object containing stats array and total count
  */
-async function getLeaderboardStats(timeframe, sortField, sortDirection, skip, limit) {
+async function getLeaderboardStats(
+  timeframe,
+  sortField,
+  sortDirection,
+  skip,
+  limit
+) {
   try {
     if (isUsingMongoDB()) {
       const PlayerStats = require("../models/PlayerStats");
@@ -367,41 +427,45 @@ async function getLeaderboardStats(timeframe, sortField, sortDirection, skip, li
 
       // Get host role ID from environment
       const HOST_ROLE_ID = process.env.HOST_ROLE_ID;
-      
+
       // Create query to exclude hosts if HOST_ROLE_ID is defined
       let query = {};
-      
+
       // Get total count (excluding the pagination)
       const totalCount = await PlayerStats.countDocuments(query);
-      
+
       // Get the stats with pagination
       const stats = await PlayerStats.find(query)
         .sort({ [sortField]: sortDirection })
         .skip(skip)
         .limit(limit)
         .lean();
-      
+
       return { stats, totalCount };
     } else {
       // File-based implementation
       const allStats = [];
-      
+
       // Convert cache to array for sorting
       statsCache.forEach((stats, userId) => {
         // Add the stats to the array
         allStats.push(stats);
       });
-      
+
       // Sort the array based on the specified field and direction
       const sortedStats = allStats.sort((a, b) => {
         // Extract the field value based on timeframe and field name
         const fieldA = getNestedValue(a, sortField) || "0";
         const fieldB = getNestedValue(b, sortField) || "0";
-        
+
         // Compare based on field type
-        if (sortField.includes("Profit") || sortField.includes("Wagered") || 
-            sortField.includes("Won") || sortField.includes("Lost") || 
-            sortField.includes("Donated")) {
+        if (
+          sortField.includes("Profit") ||
+          sortField.includes("Wagered") ||
+          sortField.includes("Won") ||
+          sortField.includes("Lost") ||
+          sortField.includes("Donated")
+        ) {
           // BigInt comparison for currency values
           return sortDirection * (BigInt(fieldA) - BigInt(fieldB));
         } else {
@@ -409,10 +473,10 @@ async function getLeaderboardStats(timeframe, sortField, sortDirection, skip, li
           return sortDirection * (Number(fieldA) - Number(fieldB));
         }
       });
-      
+
       const totalCount = sortedStats.length;
       const paginatedStats = sortedStats.slice(skip, skip + limit);
-      
+
       return { stats: paginatedStats, totalCount };
     }
   } catch (error) {
@@ -423,16 +487,16 @@ async function getLeaderboardStats(timeframe, sortField, sortDirection, skip, li
 
 // Helper function to get nested value from an object
 function getNestedValue(obj, path) {
-  const parts = path.split('.');
+  const parts = path.split(".");
   let current = obj;
-  
+
   for (const part of parts) {
     if (current == null) {
       return undefined;
     }
     current = current[part];
   }
-  
+
   return current;
 }
 
@@ -478,6 +542,59 @@ function debugStats(userId) {
   }
 }
 
+/**
+ * Get donation leaderboard
+ * @param {string} currency - The currency to get leaderboard for ('osrs' or 'rs3')
+ * @param {number} limit - The maximum number of results to return
+ * @returns {Array} The donation leaderboard data
+ */
+async function getDonationLeaderboard(currency, limit = 10) {
+  try {
+    const sortField = `${currency}Donated`;
+
+    if (isUsingMongoDB()) {
+      const PlayerStats = require("../models/PlayerStats");
+      if (!PlayerStats) {
+        return [];
+      }
+
+      // Create query to filter out zero donations
+      const query = {};
+      query[sortField] = { $gt: "0" };
+
+      const leaderboard = await PlayerStats.find(query)
+        .sort({ [sortField]: -1 })
+        .limit(limit)
+        .lean();
+
+      return leaderboard;
+    } else {
+      // File-based implementation
+      const allStats = [];
+
+      // Convert cache to array for sorting
+      statsCache.forEach((stats, userId) => {
+        // Only include users with donations
+        if (stats[sortField] && stats[sortField] !== "0") {
+          allStats.push(stats);
+        }
+      });
+
+      // Sort by donation amount (descending)
+      const sortedStats = allStats.sort((a, b) => {
+        const donationA = BigInt(a[sortField] || "0");
+        const donationB = BigInt(b[sortField] || "0");
+        return Number(donationB - donationA); // Convert BigInt difference to Number for sorting
+      });
+
+      return sortedStats.slice(0, limit);
+    }
+  } catch (error) {
+    console.error(`Error getting ${currency} donation leaderboard:`, error);
+    return [];
+  }
+}
+
 module.exports = {
   getPlayerStats,
   updatePlayerStats,
@@ -486,7 +603,9 @@ module.exports = {
   loadStats,
   saveStats,
   debugStats,
-  getLeaderboardStats, // Add the new function to exports
-  statsCache, // Export the cache for direct access
+  getLeaderboardStats,
+  updateDonationStats,
+  getDonationLeaderboard, // Add this new function
+  statsCache,
   duelHistoryCache,
 };

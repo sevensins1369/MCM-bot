@@ -83,7 +83,7 @@ module.exports = {
       if (hostOsrsBets.length > 0 || hostRs3Bets.length > 0) {
         embed.addFields({
           name: `${targetUser.username}'s Side`,
-          value: `Total: ${formatAmount(totalHostOsrs)} OSRS, ${formatAmount(
+          value: `Total: ${formatAmount(totalHostOsrs)} osrs, ${formatAmount(
             totalHostRs3
           )} RS3`,
           inline: false,
@@ -91,7 +91,7 @@ module.exports = {
 
         if (hostOsrsBets.length > 0) {
           embed.addFields({
-            name: "OSRS Bets",
+            name: "osrs Bets",
             value: hostOsrsBets.join("\n").slice(0, 1024) || "None",
             inline: true,
           });
@@ -125,13 +125,13 @@ module.exports = {
           name: `${opponentName}'s Side`,
           value: `Total: ${formatAmount(
             totalOpponentOsrs
-          )} OSRS, ${formatAmount(totalOpponentRs3)} RS3`,
+          )} osrs, ${formatAmount(totalOpponentRs3)} RS3`,
           inline: false,
         });
 
         if (opponentOsrsBets.length > 0) {
           embed.addFields({
-            name: "OSRS Bets",
+            name: "osrs Bets",
             value: opponentOsrsBets.join("\n").slice(0, 1024) || "None",
             inline: true,
           });
@@ -152,7 +152,7 @@ module.exports = {
 
       embed.addFields({
         name: "Total Pot",
-        value: `${formatAmount(totalOsrs)} OSRS, ${formatAmount(totalRs3)} RS3`,
+        value: `${formatAmount(totalOsrs)} osrs, ${formatAmount(totalRs3)} RS3`,
         inline: false,
       });
 
@@ -246,7 +246,7 @@ module.exports = {
       if (hostOsrsBets.length > 0 || hostRs3Bets.length > 0) {
         embed.addFields({
           name: `${targetUser.username}'s Side`,
-          value: `Total: ${formatAmount(totalHostOsrs)} OSRS, ${formatAmount(
+          value: `Total: ${formatAmount(totalHostOsrs)} osrs, ${formatAmount(
             totalHostRs3
           )} RS3`,
           inline: false,
@@ -254,7 +254,7 @@ module.exports = {
 
         if (hostOsrsBets.length > 0) {
           embed.addFields({
-            name: "OSRS Bets",
+            name: "osrs Bets",
             value: hostOsrsBets.join("\n").slice(0, 1024) || "None",
             inline: true,
           });
@@ -286,13 +286,13 @@ module.exports = {
           name: `${opponentName}'s Side`,
           value: `Total: ${formatAmount(
             totalOpponentOsrs
-          )} OSRS, ${formatAmount(totalOpponentRs3)} RS3`,
+          )} osrs, ${formatAmount(totalOpponentRs3)} RS3`,
           inline: false,
         });
 
         if (opponentOsrsBets.length > 0) {
           embed.addFields({
-            name: "OSRS Bets",
+            name: "osrs Bets",
             value: opponentOsrsBets.join("\n").slice(0, 1024) || "None",
             inline: true,
           });
@@ -313,7 +313,7 @@ module.exports = {
 
       embed.addFields({
         name: "Total Pot",
-        value: `${formatAmount(totalOsrs)} OSRS, ${formatAmount(totalRs3)} RS3`,
+        value: `${formatAmount(totalOsrs)} osrs, ${formatAmount(totalRs3)} RS3`,
         inline: false,
       });
 

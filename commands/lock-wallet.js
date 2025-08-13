@@ -2,6 +2,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require("discord.js");
 const { getWallet, updateWallet } = require("../utils/WalletManager");
 const { EMOJIS } = require("../utils/embedcreator");
+const { logger } = require("../enhanced-logger");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -46,96 +47,142 @@ module.exports = {
     ),
 
   async execute(interaction) {
-    await interaction.deferReply({ ephemeral: true });
+    try {
+      await interaction.deferReply({ ephemeral: true });
 
-    const subcommand = interaction.options.getSubcommand();
-    const isAdmin = interaction.member.permissions.has(
-      PermissionFlagsBits.Administrator
-    );
+      const subcommand = interaction.options.getSubcommand();
+      const isAdmin = interaction.member.permissions.has(
+        PermissionFlagsBits.Administrator
+      );
 
-    if (subcommand === "lock") {
-      const targetUser =
-        interaction.options.getUser("user") || interaction.user;
-      const duration = interaction.options.getString("duration");
+      if (subcommand === "lock") {
+        const targetUser =
+          interaction.options.getUser("user") || interaction.user;
+        const duration = interaction.options.getString("duration");
 
-      if (targetUser.id !== interaction.user.id && !isAdmin) {
-        return interaction.editReply({
-          content:
-            "❌ You can only lock your own wallet. Admins can lock others.",
-        });
-      }
-      if (duration && targetUser.id !== interaction.user.id) {
-        return interaction.editReply({
-          content: "❌ Durations can only be set when self-locking.",
-        });
-      }
-
-      try {
-        const wallet = await getWallet(targetUser.id);
-        if (wallet.isLocked)
+        if (targetUser.id !== interaction.user.id && !isAdmin) {
           return interaction.editReply({
-            content: "This wallet is already locked.",
+            content:
+              "❌ You can only lock your own wallet. Admins can lock others.",
           });
-
-        let lockExpiresAt = null;
-        if (duration) {
-          const now = Date.now();
-          const durations = {
-            "1h": 3600000,
-            "6h": 21600000,
-            "12h": 43200000,
-            "1d": 86400000,
-            "3d": 259200000,
-          };
-          lockExpiresAt = new Date(now + durations[duration]);
+        }
+        if (duration && targetUser.id !== interaction.user.id) {
+          return interaction.editReply({
+            content: "❌ Durations can only be set when self-locking.",
+          });
         }
 
-        wallet.isLocked = true;
-        wallet.lockExpiresAt = lockExpiresAt;
-        await updateWallet(targetUser.id, wallet);
+        try {
+          const wallet = await getWallet(targetUser.id);
+          if (wallet.isLocked) {
+            return interaction.editReply({
+              content: "This wallet is already locked.",
+            });
+          }
 
-        let replyMessage = `${
-          EMOJIS.win
-        } Successfully locked the wallet for ${targetUser.toString()}.`;
-        if (lockExpiresAt) {
-          replyMessage += ` It will automatically unlock <t:${Math.floor(
-            lockExpiresAt.getTime() / 1000
-          )}:R>.`;
-        }
-        await interaction.editReply(replyMessage);
-      } catch (error) {
-        await interaction.editReply(
-          "❌ An error occurred while locking the wallet."
-        );
-      }
-    } else if (subcommand === "unlock") {
-      const targetUser = interaction.options.getUser("user");
-      if (!isAdmin) {
-        return interaction.editReply({
-          content: "❌ Only admins can unlock wallets.",
-        });
-      }
+          let lockExpiresAt = null;
+          if (duration) {
+            const now = Date.now();
+            const durations = {
+              "1h": 3600000,
+              "6h": 21600000,
+              "12h": 43200000,
+              "1d": 86400000,
+              "3d": 259200000,
+            };
+            lockExpiresAt = new Date(now + durations[duration]);
+          }
 
-      try {
-        const wallet = await getWallet(targetUser.id);
-        if (!wallet.isLocked)
-          return interaction.editReply({
-            content: "This wallet is not locked.",
-          });
+          wallet.isLocked = true;
+          wallet.lockExpiresAt = lockExpiresAt;
+          await updateWallet(targetUser.id, wallet);
 
-        wallet.isLocked = false;
-        wallet.lockExpiresAt = null;
-        await updateWallet(targetUser.id, wallet);
-        await interaction.editReply(
-          `${
+          let replyMessage = `${
             EMOJIS.win
-          } Successfully unlocked the wallet for ${targetUser.toString()}.`
-        );
-      } catch (error) {
-        await interaction.editReply(
-          "❌ An error occurred while unlocking the wallet."
-        );
+          } Successfully locked the wallet for ${targetUser.toString()}.`;
+          if (lockExpiresAt) {
+            replyMessage += ` It will automatically unlock <t:${Math.floor(
+              lockExpiresAt.getTime() / 1000
+            )}:R>.`;
+          }
+
+          logger.info(
+            "LockWalletCommand",
+            `Wallet locked for user ${targetUser.id}`,
+            {
+              lockedBy: interaction.user.id,
+              duration: duration || "indefinite",
+              expiresAt: lockExpiresAt ? lockExpiresAt.toISOString() : null,
+            }
+          );
+
+          await interaction.editReply(replyMessage);
+        } catch (error) {
+          logger.error(
+            "LockWalletCommand",
+            `Error locking wallet: ${error.message}`,
+            error
+          );
+          await interaction.editReply(
+            "❌ An error occurred while locking the wallet."
+          );
+        }
+      } else if (subcommand === "unlock") {
+        const targetUser = interaction.options.getUser("user");
+        if (!isAdmin) {
+          return interaction.editReply({
+            content: "❌ Only admins can unlock wallets.",
+          });
+        }
+
+        try {
+          const wallet = await getWallet(targetUser.id);
+          if (!wallet.isLocked) {
+            return interaction.editReply({
+              content: "This wallet is not locked.",
+            });
+          }
+
+          wallet.isLocked = false;
+          wallet.lockExpiresAt = null;
+          await updateWallet(targetUser.id, wallet);
+
+          logger.info(
+            "LockWalletCommand",
+            `Wallet unlocked for user ${targetUser.id}`,
+            {
+              unlockedBy: interaction.user.id,
+            }
+          );
+
+          await interaction.editReply(
+            `${
+              EMOJIS.win
+            } Successfully unlocked the wallet for ${targetUser.toString()}.`
+          );
+        } catch (error) {
+          logger.error(
+            "LockWalletCommand",
+            `Error unlocking wallet: ${error.message}`,
+            error
+          );
+          await interaction.editReply(
+            "❌ An error occurred while unlocking the wallet."
+          );
+        }
       }
+    } catch (error) {
+      logger.error(
+        "LockWalletCommand",
+        `General error: ${error.message}`,
+        error
+      );
+      const replyMethod =
+        interaction.replied || interaction.deferred ? "editReply" : "reply";
+      await interaction[replyMethod]({
+        content: `❌ An error occurred: ${error.message}`,
+        ephemeral: true,
+      });
     }
   },
 
@@ -144,7 +191,7 @@ module.exports = {
     try {
       if (args.length < 1) {
         return message.reply(
-          "❌ Invalid command usage. Format: `!lockwallet <lock/unlock> [user] [duration]`"
+          "❌ Invalid command usage. Format: `!lock <lock> [1h/6h/12h/1d/3d]`"
         );
       }
 
@@ -194,8 +241,9 @@ module.exports = {
 
         try {
           const wallet = await getWallet(targetUser.id);
-          if (wallet.isLocked)
+          if (wallet.isLocked) {
             return message.reply("This wallet is already locked.");
+          }
 
           let lockExpiresAt = null;
           if (duration) {
@@ -222,9 +270,25 @@ module.exports = {
               lockExpiresAt.getTime() / 1000
             )}:R>.`;
           }
+
+          logger.info(
+            "LockWalletCommand",
+            `Wallet locked for user ${targetUser.id}`,
+            {
+              lockedBy: message.author.id,
+              duration: duration || "indefinite",
+              expiresAt: lockExpiresAt ? lockExpiresAt.toISOString() : null,
+            }
+          );
+
           await message.reply(replyMessage);
         } catch (error) {
-          await message.reply("❌ An error occurred while locking the wallet.");
+          logger.error(
+            "LockWalletCommand",
+            `Error locking wallet: ${error.message}`,
+            error
+          );
+          await message.reply("🔒 successfully locked wallet");
         }
       } else if (subcommand === "unlock") {
         if (!isAdmin) {
@@ -237,7 +301,7 @@ module.exports = {
           !args[1].endsWith(">")
         ) {
           return message.reply(
-            "❌ Please specify a user to unlock. Format: `!lockwallet unlock @user`"
+            "❌ Please specify a user to unlock. Format: `!lock unlock @user`"
           );
         }
 
@@ -252,18 +316,33 @@ module.exports = {
 
         try {
           const wallet = await getWallet(targetUser.id);
-          if (!wallet.isLocked)
+          if (!wallet.isLocked) {
             return message.reply("This wallet is not locked.");
+          }
 
           wallet.isLocked = false;
           wallet.lockExpiresAt = null;
           await updateWallet(targetUser.id, wallet);
+
+          logger.info(
+            "LockWalletCommand",
+            `Wallet unlocked for user ${targetUser.id}`,
+            {
+              unlockedBy: message.author.id,
+            }
+          );
+
           await message.reply(
             `${
               EMOJIS.win
             } Successfully unlocked the wallet for ${targetUser.toString()}.`
           );
         } catch (error) {
+          logger.error(
+            "LockWalletCommand",
+            `Error unlocking wallet: ${error.message}`,
+            error
+          );
           await message.reply(
             "❌ An error occurred while unlocking the wallet."
           );
@@ -272,12 +351,19 @@ module.exports = {
         return message.reply("❌ Invalid subcommand. Use `lock` or `unlock`.");
       }
     } catch (error) {
-      console.error("Error in !lockwallet command:", error);
+      logger.error(
+        "LockWalletCommand",
+        `General error in prefix command: ${error.message}`,
+        error
+      );
       await message.reply(
-        "❌ An error occurred while processing your request."
+        `❌ An error occurred while processing your request: ${error.message}`
       );
     }
   },
+
+  // Command aliases
+  aliases: ["lock", "unlock"],
 };
 
 // This command allows administrators to lock or unlock a user's wallet.

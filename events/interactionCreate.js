@@ -251,8 +251,43 @@ async function handleButton(interaction, client) {
     ) {
       // These are handled by the collector in the setflowers command
       return;
+    }
+    // NEW HANDLERS FOR CASH IN AND CASH OUT BUTTONS
+    else if (customId.startsWith("claim_cashin_")) {
+      // Get the cashin command and call its handleButton method
+      const cashinCommand = client.commands.get("cashin");
+      if (cashinCommand && cashinCommand.handleButton) {
+        await cashinCommand.handleButton(interaction);
+      } else {
+        logger.error(
+          "ButtonHandler",
+          "Cash in command not found or doesn't have a button handler"
+        );
+        await interaction.followUp({
+          content:
+            "Cash in command not found or doesn't have a button handler.",
+          ephemeral: true,
+        });
+      }
+    } else if (customId.startsWith("claim_cashout_")) {
+      // Get the cashout command and call its handleButton method
+      const cashoutCommand = client.commands.get("cashout");
+      if (cashoutCommand && cashoutCommand.handleButton) {
+        await cashoutCommand.handleButton(interaction);
+      } else {
+        logger.error(
+          "ButtonHandler",
+          "Cash out command not found or doesn't have a button handler"
+        );
+        await interaction.followUp({
+          content:
+            "Cash out command not found or doesn't have a button handler.",
+          ephemeral: true,
+        });
+      }
     } else {
       // If button action is not recognized, send a follow-up message
+      logger.warn("ButtonHandler", `Button action not recognized: ${customId}`);
       await interaction
         .followUp({
           content: "This button action is not recognized.",
@@ -724,7 +759,7 @@ async function handleDiceDuelAccept(interaction, customId) {
     const { formatAmount, EMOJIS } = require("../utils/embedcreator");
 
     const embed = new EmbedBuilder()
-      .setColor(0x00ff00)
+      .setColor(0x9c27b0)
       .setTitle(`${EMOJIS.dice} Dice Duel Accepted`)
       .setDescription(
         `${interaction.user.toString()} has accepted ${challenger.toString()}'s dice duel challenge!`
@@ -739,7 +774,7 @@ async function handleDiceDuelAccept(interaction, customId) {
         },
         {
           name: "Next Step",
-          value: "Both players must use `/diceduel-roll` to roll the dice.",
+          value: "Both players must use `.roll` to roll the dice.",
           inline: false,
         }
       )
@@ -833,7 +868,7 @@ async function handleDiceDuelDecline(interaction, customId) {
 
     // Update the message
     await interaction.editReply({
-      content: `${interaction.user.toString()} has declined ${challenger.toString()}'s dice duel challenge. The bet has been refunded.`,
+      content: `${interaction.user.toString()} has declined ${challenger.toString()}'s dice duel challenge. The pot has been refunded.`,
       embeds: [],
       components: [],
     });

@@ -27,7 +27,7 @@ module.exports = {
 
       await setDefaultCurrency(userId, currency);
 
-      const currencyDisplay = currency === "osrs" ? "07" : "RS3";
+      const currencyDisplay = currency === "osrs" ? "osrs" : "RS3";
       await interaction.editReply({
         content: `${EMOJIS.win} Your default currency has been set to **${currencyDisplay}**. This will be used when you don't specify a currency in betting and sending commands.`,
       });
@@ -47,26 +47,28 @@ module.exports = {
     try {
       if (args.length < 1) {
         return message.reply(
-          "❌ Please specify a currency (07 or rs3). Usage: `!set-default <currency>`"
+          "❌ Please specify a currency (osrs or rs3). Usage: `!set-default <currency>`"
         );
       }
 
       const currencyInput = args[0].toLowerCase();
       let currency;
 
-      if (currencyInput === "07" || currencyInput === "osrs") {
+      if (currencyInput === "osrs" || currencyInput === "osrs") {
         currency = "osrs";
       } else if (currencyInput === "rs3") {
         currency = "rs3";
       } else {
-        return message.reply("❌ Invalid currency. Please use '07' or 'rs3'.");
+        return message.reply(
+          "❌ Invalid currency. Please use 'osrs' or 'rs3'."
+        );
       }
 
       const userId = message.author.id;
 
       await setDefaultCurrency(userId, currency);
 
-      const currencyDisplay = currency === "osrs" ? "07" : "RS3";
+      const currencyDisplay = currency === "osrs" ? "osrs" : "RS3";
       await message.reply(
         `${EMOJIS.win} Your default currency has been set to **${currencyDisplay}**. This will be used when you don't specify a currency in betting and sending commands.`
       );

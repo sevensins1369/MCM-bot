@@ -3,19 +3,23 @@ const { SlashCommandBuilder } = require("discord.js");
 const parseAmount = require("../utils/parseAmount");
 const { getWallet, updateWallet } = require("../utils/WalletManager");
 const { formatAmount } = require("../utils/embedcreator");
+const { logger } = require("../enhanced-logger");
+
+// Get the swap channel ID from environment variables
+const SWAP_CHANNEL_ID = process.env.SWAP_CHANNEL_ID;
 
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("swap")
-    .setDescription("Swap between 07 and RS3 coins")
+    .setDescription("Swap between osrs and RS3 coins")
     .addStringOption((opt) =>
       opt
         .setName("direction")
         .setDescription("Swap direction")
         .setRequired(true)
         .addChoices(
-          { name: "07 → RS3", value: "07_to_rs3" },
-          { name: "RS3 → 07", value: "rs3_to_07" }
+          { name: "osrs → RS3", value: "osrs_to_rs3" },
+          { name: "RS3 → osrs", value: "rs3_to_osrs" }
         )
     )
     .addStringOption((opt) =>
@@ -27,16 +31,37 @@ module.exports = {
 
   async execute(interaction) {
     try {
+      // Check if the command is being used in the designated swap channel
+      if (SWAP_CHANNEL_ID && interaction.channelId !== SWAP_CHANNEL_ID) {
+        return interaction.reply({
+          content: `❌ This command can only be used in <#${SWAP_CHANNEL_ID}>.`,
+          ephemeral: true,
+        });
+      }
+
       const userId = interaction.user.id;
       const direction = interaction.options.getString("direction");
       const rawAmount = interaction.options.getString("amount");
 
-      console.log(
-        `[EXECUTE] /swap by ${interaction.user.tag} for ${rawAmount} ${direction}`
+      logger.info(
+        "SwapCommand",
+        `Swap requested by ${interaction.user.tag} for ${rawAmount} ${direction}`
       );
 
-      const amount = parseAmount(rawAmount); // Returns BigInt
-      if (amount <= 0n) {
+      // Parse amount safely
+      let amount;
+      try {
+        amount = parseAmount(rawAmount);
+        if (!amount || amount <= 0n) {
+          return interaction.reply({
+            content: "❌ Invalid amount format.",
+            ephemeral: true,
+          });
+        }
+      } catch (error) {
+        logger.error("SwapCommand", `Error parsing amount: ${error.message}`, {
+          rawAmount,
+        });
         return interaction.reply({
           content: "❌ Invalid amount format.",
           ephemeral: true,
@@ -47,46 +72,93 @@ module.exports = {
       let responseAmount;
       let responseCurrency;
 
-      if (direction === "07_to_rs3") {
+      if (direction === "osrs_to_rs3") {
         if (wallet.osrs < amount) {
           return interaction.reply({
-            content: "❌ Not enough 07 coins.",
+            content: "❌ Not enough osrs coins.",
             ephemeral: true,
           });
         }
-        wallet.osrs -= amount;
-        wallet.rs3 += amount * 10n; // BigInt math
-        responseAmount = amount * 10n;
-        responseCurrency = "RS3";
+
+        // Safely perform BigInt operations
+        try {
+          wallet.osrs = BigInt(wallet.osrs) - BigInt(amount);
+          const convertedAmount = BigInt(amount) * BigInt(10);
+          wallet.rs3 = BigInt(wallet.rs3) + convertedAmount;
+          responseAmount = convertedAmount;
+          responseCurrency = "RS3";
+        } catch (error) {
+          logger.error(
+            "SwapCommand",
+            `Error in BigInt operations (osrs to RS3): ${error.message}`,
+            {
+              userId,
+              amount: amount.toString(),
+              walletOsrs: wallet.osrs.toString(),
+              walletRs3: wallet.rs3.toString(),
+            }
+          );
+          return interaction.reply({
+            content: "❌ An error occurred during the swap calculation.",
+            ephemeral: true,
+          });
+        }
       } else {
-        // rs3_to_07
+        // rs3_to_osrs
         if (wallet.rs3 < amount) {
           return interaction.reply({
             content: "❌ Not enough RS3 coins.",
             ephemeral: true,
           });
         }
-        const converted = amount / 10n; // BigInt math
-        wallet.rs3 -= amount;
-        wallet.osrs += converted;
-        responseAmount = converted;
-        responseCurrency = "07";
+
+        // Safely perform BigInt operations
+        try {
+          wallet.rs3 = BigInt(wallet.rs3) - BigInt(amount);
+          const convertedAmount = BigInt(amount) / BigInt(10);
+          wallet.osrs = BigInt(wallet.osrs) + convertedAmount;
+          responseAmount = convertedAmount;
+          responseCurrency = "osrs";
+        } catch (error) {
+          logger.error(
+            "SwapCommand",
+            `Error in BigInt operations (RS3 to osrs): ${error.message}`,
+            {
+              userId,
+              amount: amount.toString(),
+              walletOsrs: wallet.osrs.toString(),
+              walletRs3: wallet.rs3.toString(),
+            }
+          );
+          return interaction.reply({
+            content: "❌ An error occurred during the swap calculation.",
+            ephemeral: true,
+          });
+        }
       }
 
       await updateWallet(userId, wallet);
 
       await interaction.reply(
         `✅ Swapped **${rawAmount} ${
-          direction === "07_to_rs3" ? "07" : "RS3"
+          direction === "osrs_to_rs3" ? "osrs" : "RS3"
         }** → **${formatAmount(responseAmount)} ${responseCurrency}**.`
       );
-      console.log(
-        `${interaction.user.username} swapped ${rawAmount} for ${formatAmount(
-          responseAmount
-        )} ${responseCurrency}`
+
+      logger.info(
+        "SwapCommand",
+        `Swap completed for ${interaction.user.username}`,
+        {
+          from: `${rawAmount} ${direction === "osrs_to_rs3" ? "osrs" : "RS3"}`,
+          to: `${formatAmount(responseAmount)} ${responseCurrency}`,
+        }
       );
     } catch (error) {
-      console.error("Error in /swap command:", error);
+      logger.error(
+        "SwapCommand",
+        `Error in swap command: ${error.message}`,
+        error
+      );
       const replyMethod =
         interaction.replied || interaction.deferred ? "followUp" : "reply";
       await interaction[replyMethod]({
@@ -99,9 +171,16 @@ module.exports = {
   // For prefix command usage
   async run(message, args) {
     try {
+      // Check if the command is being used in the designated swap channel
+      if (SWAP_CHANNEL_ID && message.channelId !== SWAP_CHANNEL_ID) {
+        return message.reply(
+          `❌ This command can only be used in <#${SWAP_CHANNEL_ID}>.`
+        );
+      }
+
       if (args.length < 2) {
         return message.reply(
-          "❌ Invalid command usage. Format: `!swap <direction> <amount>`\nDirections: `07tors3` or `rs3to07`"
+          "❌ Invalid command usage. Format: `!swap <direction> <amount>`\nDirections: `osrstors3` or `rs3toosrs`"
         );
       }
 
@@ -110,29 +189,39 @@ module.exports = {
 
       let direction;
       if (
-        directionInput === "07tors3" ||
-        directionInput === "07_to_rs3" ||
-        directionInput === "07-to-rs3"
+        directionInput === "osrstors3" ||
+        directionInput === "osrs_to_rs3" ||
+        directionInput === "osrs-to-rs3"
       ) {
-        direction = "07_to_rs3";
+        direction = "osrs_to_rs3";
       } else if (
-        directionInput === "rs3to07" ||
-        directionInput === "rs3_to_07" ||
-        directionInput === "rs3-to-07"
+        directionInput === "rs3toosrs" ||
+        directionInput === "rs3_to_osrs" ||
+        directionInput === "rs3-to-osrs"
       ) {
-        direction = "rs3_to_07";
+        direction = "rs3_to_osrs";
       } else {
         return message.reply(
-          "❌ Invalid direction. Use `07tors3` or `rs3to07`."
+          "❌ Invalid direction. Use `osrstors3` or `rs3toosrs`."
         );
       }
 
-      console.log(
-        `[RUN] !swap by ${message.author.tag} for ${rawAmount} ${direction}`
+      logger.info(
+        "SwapCommand",
+        `Swap requested by ${message.author.tag} for ${rawAmount} ${direction}`
       );
 
-      const amount = parseAmount(rawAmount); // Returns BigInt
-      if (amount <= 0n) {
+      // Parse amount safely
+      let amount;
+      try {
+        amount = parseAmount(rawAmount);
+        if (!amount || amount <= 0n) {
+          return message.reply("❌ Invalid amount format.");
+        }
+      } catch (error) {
+        logger.error("SwapCommand", `Error parsing amount: ${error.message}`, {
+          rawAmount,
+        });
         return message.reply("❌ Invalid amount format.");
       }
 
@@ -141,44 +230,89 @@ module.exports = {
       let responseAmount;
       let responseCurrency;
 
-      if (direction === "07_to_rs3") {
+      if (direction === "osrs_to_rs3") {
         if (wallet.osrs < amount) {
-          return message.reply("❌ Not enough 07 coins.");
+          return message.reply("❌ Not enough osrs coins.");
         }
-        wallet.osrs -= amount;
-        wallet.rs3 += amount * 10n; // BigInt math
-        responseAmount = amount * 10n;
-        responseCurrency = "RS3";
+
+        // Safely perform BigInt operations
+        try {
+          wallet.osrs = BigInt(wallet.osrs) - BigInt(amount);
+          const convertedAmount = BigInt(amount) * BigInt(10);
+          wallet.rs3 = BigInt(wallet.rs3) + convertedAmount;
+          responseAmount = convertedAmount;
+          responseCurrency = "RS3";
+        } catch (error) {
+          logger.error(
+            "SwapCommand",
+            `Error in BigInt operations (osrs to RS3): ${error.message}`,
+            {
+              userId,
+              amount: amount.toString(),
+              walletOsrs: wallet.osrs.toString(),
+              walletRs3: wallet.rs3.toString(),
+            }
+          );
+          return message.reply(
+            "❌ An error occurred during the swap calculation."
+          );
+        }
       } else {
-        // rs3_to_07
+        // rs3_to_osrs
         if (wallet.rs3 < amount) {
           return message.reply("❌ Not enough RS3 coins.");
         }
-        const converted = amount / 10n; // BigInt math
-        wallet.rs3 -= amount;
-        wallet.osrs += converted;
-        responseAmount = converted;
-        responseCurrency = "07";
+
+        // Safely perform BigInt operations
+        try {
+          wallet.rs3 = BigInt(wallet.rs3) - BigInt(amount);
+          const convertedAmount = BigInt(amount) / BigInt(10);
+          wallet.osrs = BigInt(wallet.osrs) + convertedAmount;
+          responseAmount = convertedAmount;
+          responseCurrency = "osrs";
+        } catch (error) {
+          logger.error(
+            "SwapCommand",
+            `Error in BigInt operations (RS3 to osrs): ${error.message}`,
+            {
+              userId,
+              amount: amount.toString(),
+              walletOsrs: wallet.osrs.toString(),
+              walletRs3: wallet.rs3.toString(),
+            }
+          );
+          return message.reply(
+            "❌ An error occurred during the swap calculation."
+          );
+        }
       }
 
       await updateWallet(userId, wallet);
 
       await message.reply(
         `✅ Swapped **${rawAmount} ${
-          direction === "07_to_rs3" ? "07" : "RS3"
+          direction === "osrs_to_rs3" ? "osrs" : "RS3"
         }** → **${formatAmount(responseAmount)} ${responseCurrency}**.`
       );
-      console.log(
-        `${message.author.username} swapped ${rawAmount} for ${formatAmount(
-          responseAmount
-        )} ${responseCurrency}`
+
+      logger.info(
+        "SwapCommand",
+        `Swap completed for ${message.author.username}`,
+        {
+          from: `${rawAmount} ${direction === "osrs_to_rs3" ? "osrs" : "RS3"}`,
+          to: `${formatAmount(responseAmount)} ${responseCurrency}`,
+        }
       );
     } catch (error) {
-      console.error("Error in !swap command:", error);
+      logger.error(
+        "SwapCommand",
+        `Error in !swap command: ${error.message}`,
+        error
+      );
       await message.reply("❌ An error occurred while processing the swap.");
     }
   },
 };
 
-// This command allows users to swap between 07 and RS3 coins.
+// This command allows users to swap between osrs and RS3 coins.
 // It validates the amount, checks the user's balance, performs the swap, and updates the wallet

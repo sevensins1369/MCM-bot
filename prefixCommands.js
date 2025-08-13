@@ -82,7 +82,7 @@ function registerAllPrefixCommands() {
   registerPrefixCommand("dd", require("./commands/dice-duel"));
   registerPrefixCommand("diceduel", require("./commands/dice-duel"));
 
-  registerPrefixCommand("roll", require("./commands/roll"));
+  registerPrefixCommand("roll", require("./commands/diceduel-roll"));
 
   registerPrefixCommand("ddc", require("./commands/diceduel-cancel"));
 

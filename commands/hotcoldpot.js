@@ -71,11 +71,15 @@ module.exports = {
           value: game.isOpen ? "Open for Betting" : "Betting Closed",
           inline: true,
         },
-        { name: "Game ID", value: game.id, inline: true },
-        { name: "OSRS Pot", value: formatAmount(totalOsrs), inline: true },
-        { name: "RS3 Pot", value: formatAmount(totalRs3), inline: true },
-        { name: "Total Bets", value: game.bets.length.toString(), inline: true }
+        {
+          name: "Total Bets",
+          value: game.bets.length.toString(),
+          inline: true,
+        },
+        { name: "07 Pot", value: formatAmount(totalOsrs), inline: false },
+        { name: "RS3 Pot", value: formatAmount(totalRs3), inline: false }
       )
+      .setFooter({ text: "Game ID", value: game.id, inline: true })
       .setTimestamp();
 
     // Add bet breakdown if there are bets
@@ -173,15 +177,15 @@ module.exports = {
             value: game.isOpen ? "Open for Betting" : "Betting Closed",
             inline: true,
           },
-          { name: "Game ID", value: game.id, inline: true },
-          { name: "OSRS Pot", value: formatAmount(totalOsrs), inline: true },
-          { name: "RS3 Pot", value: formatAmount(totalRs3), inline: true },
           {
             name: "Total Bets",
             value: game.bets.length.toString(),
             inline: true,
-          }
+          },
+          { name: "07 Pot", value: formatAmount(totalOsrs), inline: false },
+          { name: "RS3 Pot", value: formatAmount(totalRs3), inline: false }
         )
+        .setFooter({ text: "Game ID", value: game.id, inline: true })
         .setTimestamp();
 
       // Add bet breakdown if there are bets

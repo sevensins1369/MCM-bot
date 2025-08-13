@@ -34,15 +34,15 @@ module.exports = {
           .setTitle(
             `${EMOJIS.fire || "🔥"} HOT COLD ${
               EMOJIS.snowflake || "❄️"
-            } Betting Closed`
+            } Betting is now Closed!`
           )
           .setColor(0xff5733)
           .setDescription(
-            `${interaction.user.toString()} has closed betting for their Hot/Cold game.`
+            `Host ${interaction.user.toString()} has closed the pot for their Hot/Cold game.`
           )
           .addFields({
             name: "Next Step",
-            value: "Use `/hotcoldresult` to enter the result of your roll.",
+            value: "Wait for the host to enter the result for this round!",
             inline: false,
           })
           .setTimestamp();
@@ -77,23 +77,23 @@ module.exports = {
           )
           .setColor(0xff5733)
           .setDescription(
-            `${interaction.user.toString()} has reopened betting for their Hot/Cold game.`
+            `Host ${interaction.user.toString()} has reopened the pot please add your bet now!.`
           )
           .addFields(
             {
               name: "🔥 HOT COLORS 🔥",
-              value: "Red, Orange, Yellow, Black",
+              value: `Red ${EMOJIS.REDFIRE}, Orange ${EMOJIS.ORGFIRE}, Yellow ${EMOJIS.YLWFIRE}, Black ${EMOJIS.BLKFIRE}`,
               inline: false,
             },
             {
               name: "❄️ COLD COLORS ❄️",
-              value: "Blue, Green, Purple, White",
+              value: `Blue ${EMOJIS.BLUSNOW}, Green ${EMOJIS.GRNSNOW}, Purple ${EMOJIS.PRPSNOW}, White ${EMOJIS.WHTSNOW}`,
               inline: false,
             },
             {
               name: "How to Play",
               value:
-                "Place bets with `/hotcoldbet`\n• Bet on HOT or COLD: 1.85x payout\n• Bet on exact color: 5x payout",
+                "Place bets with `.hcb <host> <H/C/COLOR> <amount> <rs3/07/default> `\n• Win on HOT or COLD: 1.85x payout\n• Win on exact color: 5x payout",
               inline: false,
             }
           )
@@ -141,29 +141,28 @@ module.exports = {
         )
         .setColor(0xff5733) // Hot orange-red color
         .setDescription(
-          `${interaction.user.toString()} has started a Hot/Cold game!`
+          `Host ${interaction.user.toString()} has started a Hot/Cold game!`
         )
         .addFields(
           { name: "Status", value: "Open for Betting", inline: true },
-          { name: "Game ID", value: game.id, inline: true },
           {
             name: "🔥 HOT COLORS 🔥",
-            value: "Red, Orange, Yellow, Black",
+            value: `Red ${EMOJIS.REDFIRE}, Orange ${EMOJIS.ORGFIRE}, Yellow ${EMOJIS.YLWFIRE}, Black ${EMOJIS.BLKFIRE}`,
             inline: false,
           },
           {
             name: "❄️ COLD COLORS ❄️",
-            value: "Blue, Green, Purple, White",
+            value: `Blue ${EMOJIS.BLUSNOW}, Green ${EMOJIS.GRNSNOW}, Purple ${EMOJIS.PRPSNOW}, White ${EMOJIS.WHTSNOW}`,
             inline: false,
           },
           {
             name: "How to Play",
             value:
-              "Place bets with `/hotcoldbet`\n• Bet on HOT or COLD: 1.85x payout\n• Bet on exact color: 5x payout",
+              "Place bets with `.hcb <host> <H/C/COLOR> <amount> <rs3/07/default> `\n• Win on HOT or COLD: 1.85x payout\n• Win on exact color: 5x payout",
             inline: false,
           }
         )
-        .setFooter({ text: "Use /hotcold again to close betting when ready" })
+        .setFooter({ text: "Game ID", value: game.id, inline: true })
         .setTimestamp();
 
       // Create buttons
@@ -171,12 +170,6 @@ module.exports = {
         {
           type: 1, // Action Row
           components: [
-            {
-              type: 2, // Button
-              style: 1, // Primary (blue)
-              label: "Close Betting",
-              custom_id: `hc_close_betting:${interaction.user.id}`,
-            },
             {
               type: 2, // Button
               style: 4, // Danger (red)
@@ -216,11 +209,11 @@ module.exports = {
             )
             .setColor(0xff5733)
             .setDescription(
-              `${message.author.toString()} has closed betting for their Hot/Cold game.`
+              `Host ${message.author.toString()} has closed betting for their Hot/Cold game.`
             )
             .addFields({
               name: "Next Step",
-              value: "Use `!hotcoldresult` to enter the result of your roll.",
+              value: "Wait for the host to enter the result for this round!",
               inline: false,
             })
             .setTimestamp();
@@ -255,23 +248,23 @@ module.exports = {
             )
             .setColor(0xff5733)
             .setDescription(
-              `${message.author.toString()} has reopened betting for their Hot/Cold game.`
+              ` Host ${message.author.toString()} has reopened the pot for their Hot/Cold game.`
             )
             .addFields(
               {
                 name: "🔥 HOT COLORS 🔥",
-                value: "Red, Orange, Yellow, Black",
+                value: `Red ${EMOJIS.REDFIRE}, Orange ${EMOJIS.ORGFIRE}, Yellow ${EMOJIS.YLWFIRE}, Black ${EMOJIS.BLKFIRE}`,
                 inline: false,
               },
               {
                 name: "❄️ COLD COLORS ❄️",
-                value: "Blue, Green, Purple, White",
+                value: `Blue ${EMOJIS.BLUSNOW}, Green ${EMOJIS.GRNSNOW}, Purple ${EMOJIS.PRPSNOW}, White ${EMOJIS.WHTSNOW}`,
                 inline: false,
               },
               {
                 name: "How to Play",
                 value:
-                  "Place bets with `!hotcoldbet`\n• Bet on HOT or COLD: 1.85x payout\n• Bet on exact color: 5x payout",
+                  "Place bets with `.hcb <host> <H/C/COLOR> <amount> <rs3/07/default> `\n• Win on HOT or COLD: 1.85x payout\n• Win on exact color: 5x payout",
                 inline: false,
               }
             )
@@ -284,12 +277,6 @@ module.exports = {
               {
                 type: 1, // Action Row
                 components: [
-                  {
-                    type: 2, // Button
-                    style: 1, // Primary (blue)
-                    label: "Close Betting",
-                    custom_id: `hc_close_betting:${message.author.id}`,
-                  },
                   {
                     type: 2, // Button
                     style: 4, // Danger (red)
@@ -319,29 +306,28 @@ module.exports = {
           )
           .setColor(0xff5733) // Hot orange-red color
           .setDescription(
-            `${message.author.toString()} has started a Hot/Cold game!`
+            `Host ${message.author.toString()} has started a Hot/Cold game!`
           )
           .addFields(
             { name: "Status", value: "Open for Betting", inline: true },
-            { name: "Game ID", value: game.id, inline: true },
             {
               name: "🔥 HOT COLORS 🔥",
-              value: "Red, Orange, Yellow, Black",
+              value: `Red ${EMOJIS.REDFIRE}, Orange ${EMOJIS.ORGFIRE}, Yellow ${EMOJIS.YLWFIRE}, Black ${EMOJIS.BLKFIRE}`,
               inline: false,
             },
             {
               name: "❄️ COLD COLORS ❄️",
-              value: "Blue, Green, Purple, White",
+              value: `Blue ${EMOJIS.BLUSNOW}, Green ${EMOJIS.GRNSNOW}, Purple ${EMOJIS.PRPSNOW}, White ${EMOJIS.WHTSNOW}`,
               inline: false,
             },
             {
               name: "How to Play",
               value:
-                "Place bets with `!hotcoldbet`\n• Bet on HOT or COLD: 1.85x payout\n• Bet on exact color: 5x payout",
+                "Place bets with `.hcb <host> <H/C/COLOR> <amount> <rs3/07/default> `\n• Win on HOT or COLD: 1.85x payout\n• Win on exact color: 5x payout",
               inline: false,
             }
           )
-          .setFooter({ text: "Use !hotcold again to close betting when ready" })
+          .setFooter({ text: "Game ID", value: game.id, inline: true })
           .setTimestamp();
 
         // Create buttons
@@ -349,12 +335,6 @@ module.exports = {
           {
             type: 1, // Action Row
             components: [
-              {
-                type: 2, // Button
-                style: 1, // Primary (blue)
-                label: "Close Betting",
-                custom_id: `hc_close_betting:${message.author.id}`,
-              },
               {
                 type: 2, // Button
                 style: 4, // Danger (red)

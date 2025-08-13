@@ -38,7 +38,7 @@ module.exports = {
         .setDescription("Currency to bet with")
         .setRequired(false)
         .addChoices(
-          { name: "OSRS", value: "osrs" },
+          { name: "07", value: "osrs" },
           { name: "RS3", value: "rs3" }
         )
     ),

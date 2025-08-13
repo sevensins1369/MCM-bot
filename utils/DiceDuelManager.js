@@ -68,7 +68,7 @@ async function createDiceDuel(challengerId, opponentId, amount, currency) {
   if (currency !== "osrs" && currency !== "rs3") {
     return {
       success: false,
-      message: "Invalid currency. Must be 'osrs' or 'rs3'.",
+      message: "Invalid currency. Must be '07' or 'rs3'.",
     };
   }
 

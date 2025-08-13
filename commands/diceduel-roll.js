@@ -138,16 +138,11 @@ module.exports = {
       const waitingFor = isChallenger
         ? opponent
         : await interaction.client.users.fetch(duel.challengerId);
-      embed.addFields(
-        { name: "Waiting for", value: waitingFor.toString(), inline: true },
-        {
-          name: "Bet Amount",
-          value: `${formatAmount(
-            BigInt(duel.amount)
-          )} ${duel.currency.toUpperCase()}`,
-          inline: true,
-        }
-      );
+      embed.addFields({
+        name: "Waiting for",
+        value: waitingFor.toString(),
+        inline: true,
+      });
 
       // Log the roll
       logger.info(
@@ -285,16 +280,11 @@ module.exports = {
         const waitingFor = isChallenger
           ? opponent
           : await message.client.users.fetch(duel.challengerId);
-        embed.addFields(
-          { name: "Waiting for", value: waitingFor.toString(), inline: true },
-          {
-            name: "Bet Amount",
-            value: `${formatAmount(
-              BigInt(duel.amount)
-            )} ${duel.currency.toUpperCase()}`,
-            inline: true,
-          }
-        );
+        embed.addFields({
+          name: "Waiting for",
+          value: waitingFor.toString(),
+          inline: true,
+        });
 
         // Log the roll
         logger.info(
@@ -315,5 +305,5 @@ module.exports = {
   },
 
   // Command aliases
-  aliases: ["ddr"],
+  aliases: ["roll"],
 };

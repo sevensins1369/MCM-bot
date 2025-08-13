@@ -175,7 +175,7 @@ module.exports = {
       // Add fields for bets if there are any
       if (totalOsrsLost > 0n) {
         embed.addFields({
-          name: "Total 07 Lost",
+          name: "Total osrs Lost",
           value: formatAmount(totalOsrsLost),
           inline: true,
         });
@@ -385,7 +385,7 @@ module.exports = {
       // Add fields for bets if there are any
       if (totalOsrsLost > 0n) {
         embed.addFields({
-          name: "Total 07 Lost",
+          name: "Total osrs Lost",
           value: formatAmount(totalOsrsLost),
           inline: true,
         });

@@ -1155,7 +1155,7 @@ async function createFlowerGameEmbed(game, host, client) {
       name: `${EMOJIS.host} Host: ${host.username} • ${displayGameType}`,
       value: `${game.bets.length} bets • ${formatAmount(
         totalOsrs
-      )} 07 • ${formatAmount(totalRs3)} RS3`,
+      )} osrs • ${formatAmount(totalRs3)} RS3`,
       inline: false,
     });
   } else {
