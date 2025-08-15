@@ -178,7 +178,7 @@ module.exports = {
       // Check arguments
       if (args.length < 3) {
         throw new ValidationError(
-          "Usage: !hotcoldbet <host> <bet_type> <amount> [currency]"
+          "Usage: .hcb <host> <hot/cold/color> <amount> [currency/default]"
         );
       }
 

@@ -21,7 +21,7 @@ module.exports = {
         .setDescription("The color that was rolled")
         .setRequired(true)
         .addChoices(
-          { name: `${EMOJIS.REDFIRE || "(HOT)"}`, value: "red" },
+          { name: "red (HOT)", value: "red" },
           { name: "Orange (HOT)", value: "orange" },
           { name: "Yellow (HOT)", value: "yellow" },
           { name: "Black (HOT)", value: "black" },
@@ -83,7 +83,7 @@ module.exports = {
     try {
       // Check arguments
       if (args.length < 1) {
-        throw new ValidationError("Usage: !hotcoldresult <color>");
+        throw new ValidationError("Usage: .hcr <color>");
       }
 
       // Get color
