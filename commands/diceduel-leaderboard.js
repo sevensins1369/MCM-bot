@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getLeaderboardStats } = require("../utils/PlayerStatsManager");
 const { formatAmount, EMOJIS } = require("../utils/embedcreator");
 const { logger } = require("../utils/enhanced-logger");
-const { withErrorHandling } = require("../utils/error-handler");
+const { withErrorHandling } = require("../error-handler");
 
 module.exports = {
   data: new SlashCommandBuilder()

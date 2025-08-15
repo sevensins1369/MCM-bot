@@ -49,9 +49,6 @@ function registerAllPrefixCommands() {
   registerPrefixCommand("bal", require("./commands/wallet"));
   registerPrefixCommand("balance", require("./commands/wallet"));
 
-  registerPrefixCommand("setwallet", require("./commands/setwallet"));
-  registerPrefixCommand("set", require("./commands/setwallet"));
-
   registerPrefixCommand("viewwallet", require("./commands/viewwallet"));
   registerPrefixCommand("view", require("./commands/viewwallet"));
   registerPrefixCommand("vw", require("./commands/viewwallet"));
@@ -61,22 +58,16 @@ function registerAllPrefixCommands() {
   registerPrefixCommand("give", require("./commands/send"));
 
   registerPrefixCommand("wallet-privacy", require("./commands/wallet-privacy"));
-  registerPrefixCommand("wp", require("./commands/wallet-privacy"));
+  registerPrefixCommand("priv", require("./commands/wallet-privacy"));
 
   registerPrefixCommand("lock-wallet", require("./commands/lock-wallet"));
   registerPrefixCommand("lock", require("./commands/lock-wallet"));
 
   registerPrefixCommand("default", require("./commands/set-default"));
 
-  // Server wallet commands
-  registerPrefixCommand("server-wallet", require("./commands/server-wallet"));
-  registerPrefixCommand("sw", require("./commands/server-wallet"));
-
   // Dice game commands
   registerPrefixCommand("dice", require("./commands/dice"));
   registerPrefixCommand("d", require("./commands/dice"));
-
-  registerPrefixCommand("rr", require("./commands/rollresult"));
 
   // Dice duel commands
   registerPrefixCommand("dd", require("./commands/dice-duel"));
@@ -86,24 +77,13 @@ function registerAllPrefixCommands() {
 
   registerPrefixCommand("ddc", require("./commands/diceduel-cancel"));
 
-  registerPrefixCommand("cancelduel", require("./commands/cancelduel"));
-
   //hotcold commands
   registerPrefixCommand("hotcold", require("./commands/hotcold"));
   registerPrefixCommand("hc", require("./commands/hotcold"));
 
   registerPrefixCommand("hcbet", require("./commands/hotcoldbet"));
 
-  registerPrefixCommand("hch", require("./commands/hotcoldhistory"));
-
-  registerPrefixCommand("hcpot", require("./commands/hotcoldpot"));
-
-  registerPrefixCommand("hcr", require("./commands/hotcoldresult"));
-
   // Flower game commands
-  registerPrefixCommand("flowergame", require("./commands/flowergame"));
-  registerPrefixCommand("fg", require("./commands/flowergame"));
-
   registerPrefixCommand("flowerbet", require("./commands/flowerbet"));
   registerPrefixCommand("fb", require("./commands/flowerbet"));
 
@@ -124,13 +104,8 @@ function registerAllPrefixCommands() {
   registerPrefixCommand("bet", require("./commands/bet"));
   registerPrefixCommand("b", require("./commands/bet"));
 
-  registerPrefixCommand("placebet", require("./commands/placebet"));
-  registerPrefixCommand("pb", require("./commands/placebet"));
-
   registerPrefixCommand("mybets", require("./commands/mybets"));
   registerPrefixCommand("mb", require("./commands/mybets"));
-
-  registerPrefixCommand("refund", require("./commands/universal-refund"));
 
   // Pot commands
   registerPrefixCommand("pot", require("./commands/pot"));
@@ -166,52 +141,74 @@ function registerAllPrefixCommands() {
   registerPrefixCommand("mystats", require("./commands/mystats"));
   registerPrefixCommand("ms", require("./commands/mystats"));
 
-  // Reward commands
-  registerPrefixCommand("daily", require("./commands/daily"));
-  registerPrefixCommand("weekly", require("./commands/weekly"));
-  registerPrefixCommand("monthly", require("./commands/monthly"));
-
   // Host commands
   registerPrefixCommand("hoststatus", require("./commands/hoststatus"));
   registerPrefixCommand("hs", require("./commands/hoststatus"));
 
-  registerPrefixCommand("request-host", require("./commands/request-host"));
-  registerPrefixCommand("rh", require("./commands/request-host"));
+  registerPrefixCommand("win", require("./commands/win"));
+  registerPrefixCommand("loss", require("./commands/loss"));
+
+  registerPrefixCommand("twitch", require("./commands/set-twitch"));
+
+  registerPrefixCommand("rr", require("./commands/rollresult"));
+
+  registerPrefixCommand("hotcold", require("./commands/hotcold"));
+  registerPrefixCommand("hc", require("./commands/hotcold"));
+
+  registerPrefixCommand("hch", require("./commands/hotcoldhistory"));
+
+  registerPrefixCommand("hcr", require("./commands/hotcoldresult"));
+
+  registerPrefixCommand("hcpot", require("./commands/hotcoldpot"));
+
+  registerPrefixCommand("flowergame", require("./commands/flowergame"));
+  registerPrefixCommand("fg", require("./commands/flowergame"));
+
+  registerPrefixCommand("refund", require("./commands/universal-refund"));
+
+  registerPrefixCommand("placebet", require("./commands/placebet"));
+  registerPrefixCommand("pb", require("./commands/placebet"));
 
   // Misc commands
   registerPrefixCommand("donate", require("./commands/donate"));
   registerPrefixCommand("vip", require("./commands/vip"));
 
-  registerPrefixCommand("win", require("./commands/win"));
-  registerPrefixCommand("loss", require("./commands/loss"));
-
   registerPrefixCommand("swap", require("./commands/swap"));
+
   registerPrefixCommand("cashin", require("./commands/cashin"));
   registerPrefixCommand("cashout", require("./commands/cashout"));
 
   registerPrefixCommand("ref", require("./commands/request-refund"));
+
+  registerPrefixCommand("request-host", require("./commands/request-host"));
+  registerPrefixCommand("rh", require("./commands/request-host"));
 
   // Settings commands
   registerPrefixCommand("default", require("./commands/set-default"));
 
   registerPrefixCommand("check", require("./commands/check-default"));
 
-  registerPrefixCommand("twitch", require("./commands/set-twitch"));
-
   registerPrefixCommand("setflowers", require("./commands/setflowers"));
   registerPrefixCommand("sf", require("./commands/setflowers"));
 
-  registerPrefixCommand("fix", require("./commands/adminfixstats"));
-
-  // Environment check
+  // Admin commands
   registerPrefixCommand("env", require("./commands/check-env"));
 
+  registerPrefixCommand("fix", require("./commands/adminfixstats"));
+
+  registerPrefixCommand("setwallet", require("./commands/setwallet"));
+  registerPrefixCommand("set", require("./commands/setwallet"));
+
+  registerPrefixCommand("server-wallet", require("./commands/server-wallet"));
+  registerPrefixCommand("sw", require("./commands/server-wallet"));
   // Dice table
   registerPrefixCommand("dicetable", require("./commands/dicetable"));
   registerPrefixCommand("dt", require("./commands/dicetable"));
 
   // Duel
   registerPrefixCommand("duel", require("./commands/duel"));
+
+  registerPrefixCommand("cancelduel", require("./commands/cancelduel"));
 
   logger.info("PrefixCommands", "All prefix commands registered successfully");
 }

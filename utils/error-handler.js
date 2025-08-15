@@ -1,5 +1,5 @@
-// utils/error-handler.js
-const { logger } = require('./enhanced-logger');
+// error-handler.js
+const { logger } = require("./enhanced-logger");
 
 /**
  * Custom error classes for different types of errors
@@ -7,8 +7,8 @@ const { logger } = require('./enhanced-logger');
 class ValidationError extends Error {
   constructor(message) {
     super(message);
-    this.name = 'ValidationError';
-    this.code = 'VALIDATION_ERROR';
+    this.name = "ValidationError";
+    this.code = "VALIDATION_ERROR";
     this.statusCode = 400;
   }
 }
@@ -16,8 +16,8 @@ class ValidationError extends Error {
 class AuthorizationError extends Error {
   constructor(message) {
     super(message);
-    this.name = 'AuthorizationError';
-    this.code = 'AUTHORIZATION_ERROR';
+    this.name = "AuthorizationError";
+    this.code = "AUTHORIZATION_ERROR";
     this.statusCode = 403;
   }
 }
@@ -25,8 +25,8 @@ class AuthorizationError extends Error {
 class DatabaseError extends Error {
   constructor(message, originalError = null) {
     super(message);
-    this.name = 'DatabaseError';
-    this.code = 'DATABASE_ERROR';
+    this.name = "DatabaseError";
+    this.code = "DATABASE_ERROR";
     this.statusCode = 500;
     this.originalError = originalError;
   }
@@ -35,8 +35,8 @@ class DatabaseError extends Error {
 class ConfigurationError extends Error {
   constructor(message) {
     super(message);
-    this.name = 'ConfigurationError';
-    this.code = 'CONFIGURATION_ERROR';
+    this.name = "ConfigurationError";
+    this.code = "CONFIGURATION_ERROR";
     this.statusCode = 500;
   }
 }
@@ -50,11 +50,11 @@ class ConfigurationError extends Error {
 async function handleInteractionError(error, interaction, source) {
   // Log the error
   logger.error(source, `Error handling interaction: ${error.message}`, error);
-  
+
   // Prepare user-friendly message based on error type
-  let userMessage = 'An error occurred while processing your request.';
+  let userMessage = "An error occurred while processing your request.";
   let isEphemeral = true;
-  
+
   if (error instanceof ValidationError) {
     userMessage = `⚠️ ${error.message}`;
   } else if (error instanceof AuthorizationError) {
@@ -65,19 +65,26 @@ async function handleInteractionError(error, interaction, source) {
     // For unexpected errors, provide a more generic message
     userMessage = `❌ Something went wrong. Our team has been notified.`;
   }
-  
+
   // Respond to the interaction if possible
   try {
     if (interaction.deferred || interaction.replied) {
-      await interaction.followUp({ content: userMessage, ephemeral: isEphemeral });
+      await interaction.followUp({
+        content: userMessage,
+        ephemeral: isEphemeral,
+      });
     } else {
       await interaction.reply({ content: userMessage, ephemeral: isEphemeral });
     }
   } catch (replyError) {
-    logger.error(source, `Failed to reply to interaction after error: ${replyError.message}`, {
-      originalError: error,
-      replyError
-    });
+    logger.error(
+      source,
+      `Failed to reply to interaction after error: ${replyError.message}`,
+      {
+        originalError: error,
+        replyError,
+      }
+    );
   }
 }
 
@@ -89,11 +96,15 @@ async function handleInteractionError(error, interaction, source) {
  */
 async function handleMessageError(error, message, source) {
   // Log the error
-  logger.error(source, `Error handling message command: ${error.message}`, error);
-  
+  logger.error(
+    source,
+    `Error handling message command: ${error.message}`,
+    error
+  );
+
   // Prepare user-friendly message based on error type
-  let userMessage = 'An error occurred while processing your request.';
-  
+  let userMessage = "An error occurred while processing your request.";
+
   if (error instanceof ValidationError) {
     userMessage = `⚠️ ${error.message}`;
   } else if (error instanceof AuthorizationError) {
@@ -104,15 +115,19 @@ async function handleMessageError(error, message, source) {
     // For unexpected errors, provide a more generic message
     userMessage = `❌ Something went wrong. Our team has been notified.`;
   }
-  
+
   // Respond to the message if possible
   try {
     await message.reply(userMessage);
   } catch (replyError) {
-    logger.error(source, `Failed to reply to message after error: ${replyError.message}`, {
-      originalError: error,
-      replyError
-    });
+    logger.error(
+      source,
+      `Failed to reply to message after error: ${replyError.message}`,
+      {
+        originalError: error,
+        replyError,
+      }
+    );
   }
 }
 
@@ -123,7 +138,7 @@ async function handleMessageError(error, message, source) {
  * @returns {Function} - Wrapped function with error handling
  */
 function withErrorHandling(fn, source) {
-  return async function(...args) {
+  return async function (...args) {
     try {
       return await fn(...args);
     } catch (error) {
@@ -165,7 +180,9 @@ function validateInput(value, name, validator, message) {
  */
 function checkPermissions(member, requiredPermissions) {
   if (!member.permissions.has(requiredPermissions)) {
-    throw new AuthorizationError('You do not have permission to use this command');
+    throw new AuthorizationError(
+      "You do not have permission to use this command"
+    );
   }
 }
 
@@ -180,7 +197,7 @@ async function safeDbOperation(dbOperation, errorMessage) {
   try {
     return await dbOperation();
   } catch (error) {
-    throw new DatabaseError(errorMessage || 'Database operation failed', error);
+    throw new DatabaseError(errorMessage || "Database operation failed", error);
   }
 }
 
@@ -194,5 +211,5 @@ module.exports = {
   withErrorHandling,
   validateInput,
   checkPermissions,
-  safeDbOperation
+  safeDbOperation,
 };
