@@ -16,10 +16,18 @@ const DiceGameSchema = new mongoose.Schema({
   isActive: { type: Boolean, default: true },
   isOpen: { type: Boolean, default: true }, // To toggle betting
   bets: [DiceBetSchema], // Array to store all bets for this session
+  rollResult: { type: Number, default: null }, // Store the final dice roll
+  gameCompleted: { type: Boolean, default: false },
   createdAt: { type: Date, default: Date.now },
-});
+  updatedAt: { type: Date, default: Date.now },
+}, { timestamps: true });
+
+// Add indexes for performance
+DiceGameSchema.index({ hostId: 1 });
+DiceGameSchema.index({ isActive: 1 });
+DiceGameSchema.index({ isOpen: 1 });
+DiceGameSchema.index({ gameCompleted: 1 });
+DiceGameSchema.index({ createdAt: -1 });
+DiceGameSchema.index({ "bets.playerId": 1 }); // Index for bet queries
 
 module.exports = mongoose.models.DiceGame || mongoose.model('DiceGame', DiceGameSchema);
-
-// This schema defines the structure for a dice game session, including the host, active status, betting status, and an array of bets.
-const PlayerStats = require('./PlayerStats');

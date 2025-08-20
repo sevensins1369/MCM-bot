@@ -325,6 +325,14 @@ async function cancelGame(hostId) {
 }
 
 /**
+ * Get all active Hot/Cold games
+ * @returns {Map} Map of active games
+ */
+function getActiveGames() {
+  return activeGames;
+}
+
+/**
  * Get history of Hot/Cold games for a user
  * @param {string} userId - The user's Discord ID
  * @returns {Array} Array of game history objects
@@ -459,6 +467,7 @@ module.exports = {
   VALID_BET_TYPES,
   createGame,
   getActiveGame,
+  getActiveGames,
   placeBet,
   closeBetting,
   reopenBetting,

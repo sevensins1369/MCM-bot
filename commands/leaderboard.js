@@ -468,27 +468,26 @@ function createLeaderboardEmbed(
       let value;
       let displayValue;
 
+      // Ensure stat and timeframe data exist
+      const timeframeData = stat && stat[timeframe] ? stat[timeframe] : {};
+
       // Calculate the appropriate value based on category
       if (category === "bets") {
         // For bets, sum wins and losses
-        const wins =
-          stat[timeframe][`${getGameTypePrefix(gameType)}betsWon`] || 0;
-        const losses =
-          stat[timeframe][`${getGameTypePrefix(gameType)}betsLost`] || 0;
+        const wins = timeframeData[`${getGameTypePrefix(gameType)}betsWon`] || 0;
+        const losses = timeframeData[`${getGameTypePrefix(gameType)}betsLost`] || 0;
         value = wins + losses;
         displayValue = value.toString();
       } else if (category === "winrate") {
         // For win rate, calculate percentage
-        const wins =
-          stat[timeframe][`${getGameTypePrefix(gameType)}betsWon`] || 0;
-        const losses =
-          stat[timeframe][`${getGameTypePrefix(gameType)}betsLost`] || 0;
+        const wins = timeframeData[`${getGameTypePrefix(gameType)}betsWon`] || 0;
+        const losses = timeframeData[`${getGameTypePrefix(gameType)}betsLost`] || 0;
         const total = wins + losses;
         value = total > 0 ? (wins / total) * 100 : 0;
         displayValue = `${value.toFixed(1)}%`;
       } else {
         // For other categories, use the value directly
-        value = BigInt(stat[timeframe][displayField] || "0");
+        value = BigInt(timeframeData[displayField] || "0");
         if (category === "losses" && value < 0n) {
           value = -value; // Make losses positive for display
         }

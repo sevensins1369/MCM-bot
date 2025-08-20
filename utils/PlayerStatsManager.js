@@ -1,70 +1,72 @@
 // utils/PlayerStatsManager.js
+// Comprehensive player statistics manager with MongoDB optimization and timeframe support
+
 const mongoose = require("mongoose");
+const PlayerStats = require("../models/PlayerStats");
 const { isUsingMongoDB } = require("./database");
+const { logger } = require("../enhanced-logger");
 const fs = require("fs");
 const path = require("path");
 
-// In-memory cache
-const statsCache = new Map();
-const duelHistoryCache = new Map();
+// File path for storing stats when MongoDB is unavailable
+const STATS_FILE_PATH = path.join(__dirname, "..", "data", "playerstats.json");
+
+// In-memory cache for stats
+let statsCache = new Map();
+let duelHistoryCache = new Map();
 
 // File paths for local storage
 const STATS_FILE = path.join(__dirname, "../data/playerStats.json");
 const DUEL_HISTORY_FILE = path.join(__dirname, "../data/duelHistory.json");
 
-// Get player stats
+/**
+ * Get player statistics with timeframe support
+ * @param {string} userId - The user's Discord ID
+ * @returns {Promise<Object>} Player statistics object with timeframe data
+ */
 async function getPlayerStats(userId) {
-  // Check cache first
-  if (statsCache.has(userId)) {
-    return statsCache.get(userId);
-  }
-
   try {
-    if (isUsingMongoDB()) {
-      // Try to get from MongoDB
-      const PlayerStats = require("../models/PlayerStats");
-      if (!PlayerStats) {
-        return createDefaultStats(userId);
-      }
+    let stats = null;
 
-      const stats = await PlayerStats.findOne({ userId });
-      if (stats) {
-        const statsData = {
-          userId: stats.userId,
-          gamesPlayed: stats.gamesPlayed,
-          gamesWon: stats.gamesWon,
-          gamesLost: stats.gamesLost,
-          betsPlaced: stats.betsPlaced,
-          betsWon: stats.betsWon,
-          betsLost: stats.betsLost,
-          duelsWon: stats.duelsWon || 0,
-          duelsLost: stats.duelsLost || 0,
-          duelsHosted: stats.duelsHosted || 0,
-          osrsWagered: stats.osrsWagered,
-          osrsWon: stats.osrsWon,
-          osrsLost: stats.osrsLost,
-          rs3Wagered: stats.rs3Wagered,
-          rs3Won: stats.rs3Won,
-          rs3Lost: stats.rs3Lost,
-          osrsDonated: stats.osrsDonated || "0", // Add donation fields
-          rs3Donated: stats.rs3Donated || "0", // Add donation fields
-          lastPlayed: stats.lastPlayed,
-          createdAt: stats.createdAt,
-          updatedAt: stats.updatedAt,
-        };
-        statsCache.set(userId, statsData);
-        return statsData;
+    if (isUsingMongoDB()) {
+      // Try to get from MongoDB using new PlayerStats model
+      stats = await PlayerStats.findOne({ userId });
+
+      if (!stats) {
+        // Create new stats document with timeframe structure
+        stats = new PlayerStats({ userId });
+        await stats.save();
+        logger.debug("PlayerStatsManager", `Created new stats document for user ${userId}`);
+      } else {
+        // Check if timeframe resets are needed
+        await checkAndResetTimeframes(stats);
       }
+      
+      // Convert to plain object and cache
+      const statsObj = stats.toObject ? stats.toObject() : stats;
+      statsCache.set(userId, statsObj);
+      return statsObj;
     } else {
-      // Try to get from file
-      return getStatsFromFile(userId);
+      // Use file-based storage with timeframe structure
+      await loadStatsFromFile();
+      stats = statsCache.get(userId);
+
+      if (!stats) {
+        stats = createTimeframeStats(userId);
+        statsCache.set(userId, stats);
+        await saveStatsToFile();
+      } else {
+        // Ensure timeframe structure exists (for backward compatibility)
+        stats = ensureTimeframeStructure(stats);
+        await checkAndResetTimeframes(stats);
+      }
     }
 
-    // If not found, create default stats
-    return createDefaultStats(userId);
+    return stats;
   } catch (error) {
-    console.error(`Error getting stats for user ${userId}:`, error);
-    return createDefaultStats(userId);
+    logger.error("PlayerStatsManager", `Failed to get stats for user ${userId}`, error);
+    // Return timeframe-based default stats as fallback
+    return createTimeframeStats(userId);
   }
 }
 
@@ -595,6 +597,211 @@ async function getDonationLeaderboard(currency, limit = 10) {
   }
 }
 
+/**
+ * Create timeframe-based statistics structure
+ * @param {string} userId - User's Discord ID
+ * @returns {Object} Timeframe-based statistics object
+ */
+function createTimeframeStats(userId) {
+  const defaultTimeframe = {
+    duelsWon: 0,
+    duelsLost: 0,
+    duelsHosted: 0,
+    osrsProfit: "0",
+    rs3Profit: "0",
+    osrsWagered: "0",
+    rs3Wagered: "0",
+    osrsDonated: "0",
+    rs3Donated: "0",
+    diceWon: 0,
+    diceLost: 0,
+    diceOsrsProfit: "0",
+    diceRs3Profit: "0",
+    diceOsrsWagered: "0",
+    diceRs3Wagered: "0",
+    diceDuelsWon: 0,
+    diceDuelsLost: 0,
+    diceDuelsOsrsProfit: "0",
+    diceDuelsRs3Profit: "0",
+    diceDuelsOsrsWagered: "0",
+    diceDuelsRs3Wagered: "0",
+    flowersWon: 0,
+    flowersLost: 0,
+    flowersOsrsProfit: "0",
+    flowersRs3Profit: "0",
+    flowersOsrsWagered: "0",
+    flowersRs3Wagered: "0",
+    hotColdWon: 0,
+    hotColdLost: 0,
+    hotColdOsrsProfit: "0",
+    hotColdRs3Profit: "0",
+    hotColdOsrsWagered: "0",
+    hotColdRs3Wagered: "0",
+  };
+
+  return {
+    userId,
+    allTime: { ...defaultTimeframe },
+    daily: { ...defaultTimeframe },
+    weekly: { ...defaultTimeframe },
+    monthly: { ...defaultTimeframe },
+    currentDuelStreak: 0,
+    bestDuelStreak: 0,
+    currentDiceStreak: 0,
+    bestDiceStreak: 0,
+    currentDiceDuelStreak: 0,
+    bestDiceDuelStreak: 0,
+    currentFlowerStreak: 0,
+    bestFlowerStreak: 0,
+    currentHotColdStreak: 0,
+    bestHotColdStreak: 0,
+    dailyResetAt: getNextDayStart(),
+    weeklyResetAt: getNextWeekStart(),
+    monthlyResetAt: getNextMonthStart(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  };
+}
+
+/**
+ * Ensure old stats have timeframe structure (backward compatibility)
+ * @param {Object} stats - Existing stats object
+ * @returns {Object} Stats object with timeframe structure
+ */
+function ensureTimeframeStructure(stats) {
+  if (!stats.allTime) {
+    // Convert old format to new timeframe structure
+    const oldStats = { ...stats };
+    const newStats = createTimeframeStats(stats.userId);
+    
+    // Migrate old data to allTime timeframe
+    if (oldStats.duelsWon) newStats.allTime.duelsWon = oldStats.duelsWon;
+    if (oldStats.duelsLost) newStats.allTime.duelsLost = oldStats.duelsLost;
+    if (oldStats.osrsWagered) newStats.allTime.osrsWagered = oldStats.osrsWagered;
+    if (oldStats.rs3Wagered) newStats.allTime.rs3Wagered = oldStats.rs3Wagered;
+    if (oldStats.osrsDonated) newStats.allTime.osrsDonated = oldStats.osrsDonated;
+    if (oldStats.rs3Donated) newStats.allTime.rs3Donated = oldStats.rs3Donated;
+    
+    // Preserve streak data and timestamps
+    newStats.currentDuelStreak = oldStats.currentDuelStreak || 0;
+    newStats.bestDuelStreak = oldStats.bestDuelStreak || 0;
+    newStats.createdAt = oldStats.createdAt || new Date();
+    newStats.updatedAt = oldStats.updatedAt || new Date();
+    
+    return newStats;
+  }
+  
+  return stats;
+}
+
+/**
+ * Check and reset timeframe statistics if needed
+ * @param {Object} stats - Player statistics object
+ */
+async function checkAndResetTimeframes(stats) {
+  const now = new Date();
+  let needsUpdate = false;
+
+  // Check daily reset
+  if (stats.dailyResetAt && now >= new Date(stats.dailyResetAt)) {
+    stats.daily = createTimeframeStats(stats.userId).allTime; // Reset to default timeframe
+    stats.dailyResetAt = getNextDayStart();
+    needsUpdate = true;
+  }
+
+  // Check weekly reset
+  if (stats.weeklyResetAt && now >= new Date(stats.weeklyResetAt)) {
+    stats.weekly = createTimeframeStats(stats.userId).allTime; // Reset to default timeframe
+    stats.weeklyResetAt = getNextWeekStart();
+    needsUpdate = true;
+  }
+
+  // Check monthly reset
+  if (stats.monthlyResetAt && now >= new Date(stats.monthlyResetAt)) {
+    stats.monthly = createTimeframeStats(stats.userId).allTime; // Reset to default timeframe
+    stats.monthlyResetAt = getNextMonthStart();
+    needsUpdate = true;
+  }
+
+  if (needsUpdate) {
+    if (isUsingMongoDB() && stats.save) {
+      try {
+        await stats.save();
+      } catch (error) {
+        logger.error("PlayerStatsManager", "Failed to save timeframe resets", error);
+      }
+    } else {
+      await saveStatsToFile();
+    }
+  }
+}
+
+/**
+ * Load statistics from file storage
+ * @returns {Promise<void>}
+ */
+async function loadStatsFromFile() {
+  try {
+    if (fs.existsSync(STATS_FILE_PATH)) {
+      const data = await fs.promises.readFile(STATS_FILE_PATH, "utf8");
+      const statsData = JSON.parse(data);
+      statsCache.clear();
+      
+      for (const [userId, stats] of Object.entries(statsData)) {
+        // Ensure timeframe structure exists
+        const processedStats = ensureTimeframeStructure(stats);
+        statsCache.set(userId, processedStats);
+      }
+      
+      logger.info("PlayerStatsManager", `Loaded ${statsCache.size} player stats from file`);
+    }
+  } catch (error) {
+    logger.error("PlayerStatsManager", "Failed to load stats from file", error);
+    statsCache = new Map();
+  }
+}
+
+/**
+ * Save statistics to file storage
+ * @returns {Promise<void>}
+ */
+async function saveStatsToFile() {
+  try {
+    const statsObject = {};
+    for (const [userId, stats] of statsCache.entries()) {
+      statsObject[userId] = stats;
+    }
+    
+    await fs.promises.writeFile(STATS_FILE_PATH, JSON.stringify(statsObject, null, 2));
+    logger.debug("PlayerStatsManager", "Saved player stats to file");
+  } catch (error) {
+    logger.error("PlayerStatsManager", "Failed to save stats to file", error);
+  }
+}
+
+// Helper functions for timestamp calculation
+function getNextDayStart() {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setHours(0, 0, 0, 0);
+  return tomorrow;
+}
+
+function getNextWeekStart() {
+  const nextWeek = new Date();
+  const daysUntilMonday = (7 - nextWeek.getDay() + 1) % 7 || 7;
+  nextWeek.setDate(nextWeek.getDate() + daysUntilMonday);
+  nextWeek.setHours(0, 0, 0, 0);
+  return nextWeek;
+}
+
+function getNextMonthStart() {
+  const nextMonth = new Date();
+  nextMonth.setMonth(nextMonth.getMonth() + 1, 1);
+  nextMonth.setHours(0, 0, 0, 0);
+  return nextMonth;
+}
+
 module.exports = {
   getPlayerStats,
   updatePlayerStats,
@@ -605,7 +812,11 @@ module.exports = {
   debugStats,
   getLeaderboardStats,
   updateDonationStats,
-  getDonationLeaderboard, // Add this new function
-  statsCache,
-  duelHistoryCache,
+  getDonationLeaderboard,
+  createTimeframeStats,
+  ensureTimeframeStructure,
+  checkAndResetTimeframes,
+  loadStatsFromFile,
+  saveStatsToFile,
+  statsCache
 };

@@ -8,6 +8,11 @@ require("dotenv").config();
 // Global flag to track if we're using MongoDB or file-based storage
 let usingMongoDB = false;
 
+// Health check variables
+let lastHealthCheck = null;
+let healthCheckInterval = null;
+let connectionStartTime = null;
+
 /**
  * Connect to MongoDB database
  * @returns {Promise<void>}
@@ -44,9 +49,13 @@ async function connectToDatabase() {
 
         logger.info("Database", "Connected to MongoDB successfully");
         usingMongoDB = true;
+        connectionStartTime = Date.now();
 
         // Set up connection event handlers
         setupMongooseEventHandlers();
+        
+        // Start health checks
+        startHealthChecks();
 
         return; // Success, exit function
       } catch (error) {
@@ -147,7 +156,7 @@ function isUsingMongoDB() {
 }
 
 /**
- * Get the current database status
+ * Get the current database status with health metrics
  * @returns {Object} Database status information
  */
 function getDatabaseStatus() {
@@ -159,9 +168,100 @@ function getDatabaseStatus() {
     name: mongoose.connection.name || null,
     models: Object.keys(mongoose.models),
     fallbackEnabled: true,
+    lastHealthCheck: lastHealthCheck,
+    isHealthy: isHealthy(),
+    connectionUptime: getConnectionUptime(),
   };
 
   return status;
+}
+
+/**
+ * Perform a database health check
+ * @returns {Promise<boolean>} True if database is healthy
+ */
+async function performHealthCheck() {
+  try {
+    if (!usingMongoDB || mongoose.connection.readyState !== 1) {
+      lastHealthCheck = new Date();
+      return false;
+    }
+
+    // Simple ping to check connection
+    await mongoose.connection.db.admin().ping();
+    
+    // Test a simple query
+    const collections = await mongoose.connection.db.listCollections().toArray();
+    
+    lastHealthCheck = new Date();
+    logger.debug("Database", "Health check passed", { 
+      collections: collections.length,
+      uptime: getConnectionUptime()
+    });
+    
+    return true;
+  } catch (error) {
+    lastHealthCheck = new Date();
+    logger.error("Database", "Health check failed", error);
+    return false;
+  }
+}
+
+/**
+ * Check if database is healthy
+ * @returns {boolean} True if healthy
+ */
+function isHealthy() {
+  if (!usingMongoDB) return true; // File storage is always "healthy"
+  
+  const now = new Date();
+  const timeSinceLastCheck = lastHealthCheck ? now - lastHealthCheck : Infinity;
+  
+  // Consider unhealthy if no recent health check or connection is down
+  return mongoose.connection.readyState === 1 && timeSinceLastCheck < 60000; // 1 minute
+}
+
+/**
+ * Get connection uptime in milliseconds
+ * @returns {number} Uptime in milliseconds
+ */
+function getConnectionUptime() {
+  if (!connectionStartTime) return 0;
+  return Date.now() - connectionStartTime;
+}
+
+/**
+ * Start periodic health checks
+ * @param {number} interval - Interval in milliseconds (default: 30 seconds)
+ */
+function startHealthChecks(interval = 30000) {
+  if (healthCheckInterval) {
+    clearInterval(healthCheckInterval);
+  }
+  
+  healthCheckInterval = setInterval(async () => {
+    try {
+      const healthy = await performHealthCheck();
+      if (!healthy && usingMongoDB) {
+        logger.warn("Database", "Health check failed - connection may be unstable");
+      }
+    } catch (error) {
+      logger.error("Database", "Health check error", error);
+    }
+  }, interval);
+  
+  logger.info("Database", `Started health checks every ${interval}ms`);
+}
+
+/**
+ * Stop periodic health checks
+ */
+function stopHealthChecks() {
+  if (healthCheckInterval) {
+    clearInterval(healthCheckInterval);
+    healthCheckInterval = null;
+    logger.info("Database", "Stopped health checks");
+  }
 }
 
 /**
@@ -191,6 +291,10 @@ module.exports = {
   isUsingMongoDB,
   ensureDataDirectory,
   getDatabaseStatus,
+  performHealthCheck,
+  isHealthy,
+  startHealthChecks,
+  stopHealthChecks,
 };
 
 // Ensure the data directory exists

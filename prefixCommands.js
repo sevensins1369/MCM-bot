@@ -123,20 +123,6 @@ function registerAllPrefixCommands() {
   registerPrefixCommand("duelstreak", require("./commands/duelstreak"));
   registerPrefixCommand("ds", require("./commands/duelstreak"));
 
-  // Leaderboard commands
-  registerPrefixCommand("lb07", require("./commands/leaderboard-07"));
-
-  registerPrefixCommand("lbrs3", require("./commands/leaderboard-rs3"));
-
-  registerPrefixCommand("hlb", require("./commands/host-leaderboard"));
-
-  registerPrefixCommand("dlb", require("./commands/donator-leaderboard"));
-
-  registerPrefixCommand("flb", require("./commands/flower-leaderboard"));
-  registerPrefixCommand("flowerlb", require("./commands/flower-leaderboard"));
-
-  registerPrefixCommand("ddlb", require("./commands/diceduel-leaderboard"));
-
   // Stats commands
   registerPrefixCommand("mystats", require("./commands/mystats"));
   registerPrefixCommand("ms", require("./commands/mystats"));
@@ -208,7 +194,7 @@ function registerAllPrefixCommands() {
   // Duel
   registerPrefixCommand("duel", require("./commands/duel"));
 
-  registerPrefixCommand("cancelduel", require("./commands/cancelduel"));
+  registerPrefixCommand("cd", require("./commands/cancelduel"));
 
   logger.info("PrefixCommands", "All prefix commands registered successfully");
 }

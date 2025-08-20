@@ -30,7 +30,15 @@ const FlowerGameSchema = new mongoose.Schema({
   currentMinigame: { type: String, default: null },
   minigameData: { type: Object, default: {} },
   createdAt: { type: Date, default: Date.now },
-});
+  updatedAt: { type: Date, default: Date.now },
+}, { timestamps: true });
+
+// Add indexes for performance
+FlowerGameSchema.index({ hostId: 1 });
+FlowerGameSchema.index({ gameType: 1 });
+FlowerGameSchema.index({ isOpen: 1 });
+FlowerGameSchema.index({ createdAt: -1 });
+FlowerGameSchema.index({ "bets.playerId": 1 }); // Index for bet queries
 
 module.exports =
   mongoose.models.FlowerGame || mongoose.model("FlowerGame", FlowerGameSchema);

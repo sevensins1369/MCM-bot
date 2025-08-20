@@ -34,8 +34,12 @@ const WalletSchema = new mongoose.Schema({
   },
 });
 
-// Create indexes for better performance
-WalletSchema.index({ userId: 1 });
+// Create comprehensive indexes for better performance
+WalletSchema.index({ userId: 1 }, { unique: true });
+WalletSchema.index({ updatedAt: -1 });
+WalletSchema.index({ isLocked: 1 });
+WalletSchema.index({ lockExpiresAt: 1 });
+WalletSchema.index({ isPrivate: 1 });
 
 const Wallet =
   mongoose.connection.readyState === 1

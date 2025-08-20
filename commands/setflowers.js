@@ -51,13 +51,15 @@ module.exports = {
     // Get the flower game
     const game = FlowerGameManager.getFlowerGame(interaction.user.id);
     if (!game) {
-      throw new ValidationError("You do not have an active flower game.");
+      throw new ValidationError(
+        "You do not have an active flower game. Create one first using `/flowergame` command."
+      );
     }
 
     // Check if betting is closed
     if (game.isOpen) {
       throw new ValidationError(
-        "You must close betting before selecting flowers."
+        "You must close betting before selecting flowers. Use the 'Close Betting' button on your flower game first."
       );
     }
 

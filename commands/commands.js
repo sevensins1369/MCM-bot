@@ -33,18 +33,18 @@ module.exports = {
             value:
               "• `/wallet` or  `.bal` - View your wallet\n" +
               "• `/viewwallet` or `.view <user>` - View another user wallet\n" +
-              "• `/send` or `.send <user> <amount> <currency>` - Send balance to a user\n" +
-              "• `/swap` or `.swap <direction> <amount>` - Swap between osrs and RS3 currencies\n" +
-              "• `/lock-wallet` or `.lock [duration]` - Lock/unlock wallet\n" +
-              "• `/set-default` or `.default <currency>` - Set wallet default osrs or rs3\n" +
-              "• `/wallet-privacy` or `.privacy <status>` - Set wallet privacy",
+              "• `/send` or `.send <user> <amount> <07/rs3/default>` - Send balance to a user\n" +
+              "• `/swap` or `.swap <07tors3/rs3to07> <amount>` - Swap between osrs and RS3 currencies\n" +
+              "• `/lock-wallet` or `.lock lock [duration]` - Lock wallet (WARNING: only an admin can unlock your wallet)\n" +
+              "• `/set-default` or `.default <07/rs3>` - Set wallet default\n" +
+              "• `/wallet-privacy` or `.priv <private/public>` - Set wallet privacy",
           },
           {
             name: "Utility Commands",
             value:
               "• `/donate` or `.donate <amount> <currency>` - Donate to the server!\n" +
-              "• `/cashin` or `.cashin <amount>` - Request to cash in\n" +
-              "• `/cashout` or `.cashout <amount>` - Request to cash out",
+              "• `/cashin` or `.cashin <amount> <07/rs3>` - Request to cash in\n" +
+              "• `/cashout` or `.cashout <amount> <07/rs3>` - Request to cash out",
           }
         );
 
@@ -64,10 +64,9 @@ module.exports = {
           {
             name: "Stats Commands",
             value:
-              "• `/mystats` or `.ms` - View your gambling stats\n" +
-              "• `/daily` or `.daily` - View daily stats\n" +
-              "• `/weekly` or `.weekly` - View weekly stats\n" +
-              "• `/monthly` or `.monthly` - View monthly stats",
+              "• `/mystats` or `.ms <alltime/daily/weekly/monthly> <all/duels/dice/diceduels/flowers/hotcold` - View your gambling stats\n" +
+              "• `the mystats command also will auto default to alltime if left blank`\n" +
+              "• `the mystats command will also show all stats if no game type is specified`",
           }
         );
 
@@ -119,19 +118,19 @@ module.exports = {
           {
             name: "Duel Hosting",
             value:
-              "• `/duel` or `.duel <type> [user]` - Start a new duel (Whip or Poly)\n" +
+              "• `/duel` or `.duel <whip/poly> [user]` - Start a new duel (Whip or Poly)\n" +
               "• `/win` or `.win` - Declare a win and process payouts\n" +
               "• `/loss` or `.loss` - Declare a loss\n" +
               "• `/pot` or `.pot` - View all bets on your duel\n" +
-              "• `/cancelduel` or `.cancelduel` - Cancel your duel and refund all bets",
+              "• `/cancelduel` or `.cd` - Cancel your duel and refund all bets",
           },
           {
             name: "Dice Hosting",
             value:
-              "• `/dicetable <subcommand>` - Manage your dice table\n" +
-              "• `.dopen` - Open a dice table\n" +
-              "• `.dclose` - Close a dice table\n" +
-              "• `.dtoggle` - Toggle betting open/closed\n" +
+              "• `/dicetable <open/close/bets>` - Manage your dice table\n" +
+              "• `.dtopen` - Open a dice table\n" +
+              "• `.dtclose` - Close a dice table\n" +
+              "• `.dtbets` - Toggle betting open/closed\n" +
               "• `/rollresult` or `.rr <roll>` - Enter your dice roll result",
           },
           {
@@ -145,13 +144,14 @@ module.exports = {
             value:
               "• `/hotcold` or `.hc` - start a hot/cold game\n" +
               "• `/hotcoldhistory` or `.hch` - View the streak history for hot/cold games\n" +
-              "• `/hotcoldresult` or `.hcr <result>` - Set the result of a hot/cold game",
+              "• `/hotcoldresult` or `.hcr <result>` - Set the result of a hot/cold game\n" +
+              "• `/hotcoldpot` or `.hcpot <user>` - View all bets on a host's hot/cold pot",
           },
           {
             name: "misc",
             value:
               "• `/host-leaderboard` or `.hl <currency> <category>` - View host leaderboard\n" +
-              "• `/hoststatus` or `.hs <subcommand>` - Set your hosting status open/closed\n" +
+              "• `/hoststatus` or `.hs <open/closed>` - Set your hosting status open/closed\n" +
               "• `/universal-refund` or `.refund <player>` - Refund a player's bets across all game modes\n" +
               "• `/placebet` or `.pb <player> <host> <currency> <amount> <duel_type>` - Place a bet on behalf of a player\n" +
               "• `/set-twitch` or `.twitch <username>` - Set your Twitch username for host embeds",
@@ -310,7 +310,7 @@ module.exports = {
               "• `/viewwallet` or `.view <user>` - View another user wallet\n" +
               "• `/send` or `.send <user> <amount> <currency>` - Send balance to a user\n" +
               "• `/swap` or `.swap <direction> <amount>` - Swap between osrs and RS3 currencies\n" +
-              "• `/lock-wallet` or `lock [duration]` - Lock/unlock wallet\n" +
+              "• `/lock-wallet` or `.lock lock [duration]` - Lock wallet (WARNING: only admins can unlock)\n" +
               "• `/set-default` or `.default <currency>` - Set wallet default osrs or rs3\n" +
               "• `/wallet-privacy` or `.privacy <status>` - Set wallet privacy",
           },
@@ -397,15 +397,16 @@ module.exports = {
               "• `/win` or `.win` - Declare a win and process payouts\n" +
               "• `/loss` or `.loss` - Declare a loss\n" +
               "• `/pot` or `.pot` - View all bets on your duel\n" +
+              "• `/duel-streak` or `.streak` - View duel win streaks\n" +
               "• `/cancelduel` or `.cancelduel` - Cancel your duel and refund all bets",
           },
           {
             name: "Dice Hosting",
             value:
-              "• `/dicetable <subcommand>` - Manage your dice table\n" +
-              "• `.dopen` - Open a dice table\n" +
-              "• `.dclose` - Close a dice table\n" +
-              "• `.dt` - Toggle betting open/closed\n" +
+              "• `/dicetable <open/close/bets>` - Manage your dice table\n" +
+              "• `.dtopen` - Open a dice table\n" +
+              "• `.dcancel` - Close a dice table\n" +
+              "• `.dtbets` - Toggle betting open/closed\n" +
               "• `/rollresult` or `.rr <roll>` - Enter your dice roll result",
           },
           {
@@ -419,13 +420,14 @@ module.exports = {
             value:
               "• `/hotcold` or `.hc` - start a hot/cold game\n" +
               "• `/hotcoldhistory` or `.hch` - View the streak history for hot/cold games\n" +
-              "• `/hotcoldresult` or `.hcr <result>` - Set the result of a hot/cold game",
+              "• `/hotcoldresult` or `.hcr <result>` - Set the result of a hot/cold game\n" +
+              "• `/hotcoldpot` or `.hcpot <user>` - View all bets on a host's hot/cold pot",
           },
           {
             name: "misc",
             value:
               "• `/host-leaderboard` or `.hl <currency> <category>` - View host leaderboard\n" +
-              "• `/hoststatus` or `.hs <subcommand>` - Set your hosting status open/closed\n" +
+              "• `/hoststatus` or `.hs <open/closed>` - Set your hosting status open/closed\n" +
               "• `/universal-refund` or `.refund <player>` - Refund a player's bets across all game modes\n" +
               "• `/placebet` or `.pb <player> <host> <currency> <amount> <duel_type>` - Place a bet on behalf of a player\n" +
               "• `/set-twitch` or `.twitch <username>` - Set your Twitch username for host embeds",
@@ -440,6 +442,7 @@ module.exports = {
             name: "Wallet Management",
             value:
               "• `/setwallet` or `.set <user> <currency> <amount>` - Set a user's wallet balance\n" +
+              "• `/lock-wallet` or `.lock <lock/unlock>` - unlock or permanently lock a users wallet\n" +
               "• `/server-wallet` or `.sw [subcommand]` - Manage the server wallet",
           },
           {

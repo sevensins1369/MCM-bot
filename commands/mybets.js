@@ -8,10 +8,10 @@ const { logger } = require('../enhanced-logger');
 
 // Import all game managers
 const { getDuel } = require('../utils/DuelManager');
-const { getActiveDiceGames } = require('../utils/DiceManager');
+const { getActiveDiceGame } = require('../utils/DiceManager');
 const { getActiveFlowerGames } = require('../utils/FlowerGameManager');
 const { getActiveDuels } = require('../utils/DiceDuelManager');
-const { getActiveHotColdGames } = require('../utils/HotColdManager');
+const { getActiveGames } = require('../utils/HotColdManager');
 
 module.exports = {
   // Slash command definition
@@ -160,23 +160,10 @@ async function getAllActiveBets(userId) {
     
     // 2. Get dice game bets
     try {
-      const activeDiceGames = await getActiveDiceGames();
-      for (const [hostId, game] of Object.entries(activeDiceGames)) {
-        if (game.bets) {
-          for (const bet of game.bets) {
-            if (bet.playerId === userId) {
-              allBets.push({
-                type: 'Dice',
-                hostId,
-                amount: BigInt(bet.amount),
-                currency: bet.currency,
-                details: `${bet.prediction} ${bet.target || ''}`,
-                gameType: 'Dice'
-              });
-            }
-          }
-        }
-      }
+      // Note: DiceManager returns individual games, not a collection
+      // For now, we'll skip dice game bets since the current DiceManager
+      // doesn't provide a way to get all active games with bets
+      logger.info("MyBetsCommand", "Dice game bets not implemented yet (DiceManager API limitation)");
     } catch (error) {
       logger.error("MyBetsCommand", `Error fetching dice game bets: ${error.message}`, error);
     }
@@ -202,8 +189,8 @@ async function getAllActiveBets(userId) {
     
     // 4. Get flower game bets
     try {
-      const activeFlowerGames = await getActiveFlowerGames();
-      for (const [hostId, game] of Object.entries(activeFlowerGames)) {
+      const activeFlowerGames = getActiveFlowerGames(); // This returns a Map
+      for (const [hostId, game] of activeFlowerGames.entries()) {
         if (game.bets) {
           for (const bet of game.bets) {
             if (bet.playerId === userId) {
@@ -225,8 +212,8 @@ async function getAllActiveBets(userId) {
     
     // 5. Get hot/cold game bets
     try {
-      const activeHotColdGames = await getActiveHotColdGames();
-      for (const [hostId, game] of Object.entries(activeHotColdGames)) {
+      const activeHotColdGames = getActiveGames(); // This returns a Map
+      for (const [hostId, game] of activeHotColdGames.entries()) {
         if (game.bets) {
           for (const bet of game.bets) {
             if (bet.playerId === userId) {

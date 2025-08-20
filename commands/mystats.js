@@ -235,7 +235,7 @@ function createStatsEmbed(playerStats, timeframe, gameType, user) {
  * @param {string} timeframe - The timeframe to display
  */
 function addDuelStats(embed, playerStats, timeframe) {
-  const stats = playerStats[timeframe] || {};
+  const stats = (playerStats && playerStats[timeframe]) ? playerStats[timeframe] : {};
 
   const duelsWon = stats.duelsWon || 0;
   const duelsLost = stats.duelsLost || 0;
@@ -271,7 +271,7 @@ function addDuelStats(embed, playerStats, timeframe) {
  * @param {string} timeframe - The timeframe to display
  */
 function addDiceStats(embed, playerStats, timeframe) {
-  const stats = playerStats[timeframe] || {};
+  const stats = (playerStats && playerStats[timeframe]) ? playerStats[timeframe] : {};
 
   const diceWon = stats.diceWon || 0;
   const diceLost = stats.diceLost || 0;
@@ -307,7 +307,7 @@ function addDiceStats(embed, playerStats, timeframe) {
  * @param {string} timeframe - The timeframe to display
  */
 function addDiceDuelStats(embed, playerStats, timeframe) {
-  const stats = playerStats[timeframe] || {};
+  const stats = (playerStats && playerStats[timeframe]) ? playerStats[timeframe] : {};
 
   const diceDuelsWon = stats.diceDuelsWon || 0;
   const diceDuelsLost = stats.diceDuelsLost || 0;
@@ -345,7 +345,7 @@ function addDiceDuelStats(embed, playerStats, timeframe) {
  * @param {string} timeframe - The timeframe to display
  */
 function addFlowerStats(embed, playerStats, timeframe) {
-  const stats = playerStats[timeframe] || {};
+  const stats = (playerStats && playerStats[timeframe]) ? playerStats[timeframe] : {};
 
   const flowersWon = stats.flowersWon || 0;
   const flowersLost = stats.flowersLost || 0;
@@ -381,7 +381,7 @@ function addFlowerStats(embed, playerStats, timeframe) {
  * @param {string} timeframe - The timeframe to display
  */
 function addHotColdStats(embed, playerStats, timeframe) {
-  const stats = playerStats[timeframe] || {};
+  const stats = (playerStats && playerStats[timeframe]) ? playerStats[timeframe] : {};
 
   const hotColdWon = stats.hotColdWon || 0;
   const hotColdLost = stats.hotColdLost || 0;
@@ -417,7 +417,7 @@ function addHotColdStats(embed, playerStats, timeframe) {
  * @param {string} timeframe - The timeframe to display
  */
 function addOverallStats(embed, playerStats, timeframe) {
-  const stats = playerStats[timeframe] || {};
+  const stats = (playerStats && playerStats[timeframe]) ? playerStats[timeframe] : {};
 
   // Calculate total wins and losses across all game types
   const totalWins =
@@ -497,7 +497,7 @@ function addOverallStats(embed, playerStats, timeframe) {
  * @returns {number} The color code
  */
 function getColorByWinRate(playerStats, timeframe, gameType) {
-  const stats = playerStats[timeframe] || {};
+  const stats = (playerStats && playerStats[timeframe]) ? playerStats[timeframe] : {};
   let wins = 0;
   let losses = 0;
 

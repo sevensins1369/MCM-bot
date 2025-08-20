@@ -36,16 +36,12 @@ module.exports = {
     const gameType = interaction.options.getString("type");
 
     // Check if user already has an active game
-    try {
-      const existingGame = FlowerGameManager.getFlowerGame(interaction.user.id);
-      if (existingGame) {
-        throw new ValidationError("You already have an active flower game.");
-      }
-    } catch (error) {
-      if (error instanceof ValidationError) {
-        throw error;
-      }
-      // If error is not ValidationError, continue (game doesn't exist)
+    const existingGame = FlowerGameManager.getFlowerGame(interaction.user.id);
+    if (existingGame) {
+      throw new ValidationError(
+        `You already have an active ${formatGameType(existingGame.gameType)} game. ` +
+        `Please finish or cancel your current game before creating a new one.`
+      );
     }
 
     // Create flower game
@@ -129,16 +125,12 @@ module.exports = {
       }
 
       // Check if user already has an active game
-      try {
-        const existingGame = FlowerGameManager.getFlowerGame(message.author.id);
-        if (existingGame) {
-          throw new ValidationError("You already have an active flower game.");
-        }
-      } catch (error) {
-        if (error instanceof ValidationError) {
-          throw error;
-        }
-        // If error is not ValidationError, continue (game doesn't exist)
+      const existingGame = FlowerGameManager.getFlowerGame(message.author.id);
+      if (existingGame) {
+        throw new ValidationError(
+          `You already have an active ${formatGameType(existingGame.gameType)} game. ` +
+          `Please finish or cancel your current game before creating a new one.`
+        );
       }
 
       // Create flower game
@@ -193,3 +185,25 @@ module.exports = {
   // Command aliases
   aliases: ["fg"],
 };
+
+/**
+ * Format game type for display
+ * @param {string} gameType - The game type to format
+ * @returns {string} Formatted game type name
+ */
+function formatGameType(gameType) {
+  switch (gameType) {
+    case "hot_cold":
+      return "Hot/Cold";
+    case "pairs":
+      return "Pairs";
+    case "custom":
+      return "Custom";
+    case "flower_poker":
+      return "Flower Poker";
+    case "rainbow_mania":
+      return "Rainbow Mania";
+    default:
+      return "Unknown";
+  }
+}

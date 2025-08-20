@@ -18,9 +18,9 @@ module.exports = {
         .setDescription("The action to perform")
         .setRequired(true)
         .addChoices(
-          { name: "Open", value: "open" },
-          { name: "Toggle Bets", value: "toggle-bets" },
-          { name: "Cancel", value: "cancel" }
+          { name: "open", value: "open" },
+          { name: "bets", value: "toggle-bets" },
+          { name: "close", value: "cancel" }
         )
     ),
 

@@ -14,26 +14,36 @@ const WALLETS_FILE_PATH = path.join(__dirname, "..", "data", "wallets.json");
 let wallets = new Map();
 
 /**
- * Load wallets from database or file
+ * Load wallets from database or file with improved error handling
  * @returns {Promise<void>}
  */
 async function loadWallets() {
   try {
     if (isUsingMongoDB()) {
-      // Try to load from MongoDB
+      // Try to load from MongoDB with timeout and retry logic
       const Wallet = require("../models/Wallet");
-      const walletDocs = await Wallet.find({});
+      if (!Wallet) {
+        logger.warn("WalletManager", "Wallet model not available, using file storage");
+        await loadWalletsFromFile();
+        return;
+      }
+
+      // Use lean() for better performance and add timeout
+      const walletDocs = await Wallet.find({}).lean().maxTimeMS(10000);
 
       walletDocs.forEach((wallet) => {
-        wallets.set(
-          wallet.userId,
-          wallet.toObject ? wallet.toObject() : wallet
-        );
+        // Ensure BigInt conversion for amounts
+        const walletObj = {
+          ...wallet,
+          osrs: BigInt(wallet.osrs || "0"),
+          rs3: BigInt(wallet.rs3 || "0")
+        };
+        wallets.set(wallet.userId, walletObj);
       });
 
       logger.info(
         "WalletManager",
-        `Loaded ${wallets.size} wallets from database`
+        `Loaded ${wallets.size} wallets from MongoDB database`
       );
     } else {
       // Load from file
@@ -45,8 +55,15 @@ async function loadWallets() {
       "Failed to load wallets from database",
       error
     );
-    // Try to load from file as fallback
-    await loadWalletsFromFile();
+    // Always try file as fallback
+    try {
+      await loadWalletsFromFile();
+      logger.info("WalletManager", "Successfully fell back to file storage");
+    } catch (fileError) {
+      logger.error("WalletManager", "Failed to load from file as well", fileError);
+      // Initialize empty cache as last resort
+      wallets = new Map();
+    }
   }
 }
 
