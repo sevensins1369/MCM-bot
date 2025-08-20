@@ -53,7 +53,7 @@ async function connectToDatabase() {
 
         // Set up connection event handlers
         setupMongooseEventHandlers();
-        
+
         // Start health checks
         startHealthChecks();
 
@@ -119,14 +119,12 @@ function ensureDataDirectory() {
   const dataFiles = [
     "wallets.json",
     "duels.json",
-    "leaderboards.json",
     "data.json",
-    "duelHistory.json",
-    "playerStats.json",
+    "playerstats.json",
     "userPreferences.json",
     "activeGames.json",
     "rollHistory.json",
-    "diceTables.json",
+    "dicegames.json",
     "flowergames.json",
     "jackpots.json",
     "hotcoldgames.json",
@@ -134,7 +132,7 @@ function ensureDataDirectory() {
     "transactionlogs.json",
     "triggers.json",
     "userprofiles.json",
-    "dicegames.json",
+    "stats.json",
     "serverwallets.json",
   ];
 
@@ -189,16 +187,18 @@ async function performHealthCheck() {
 
     // Simple ping to check connection
     await mongoose.connection.db.admin().ping();
-    
+
     // Test a simple query
-    const collections = await mongoose.connection.db.listCollections().toArray();
-    
+    const collections = await mongoose.connection.db
+      .listCollections()
+      .toArray();
+
     lastHealthCheck = new Date();
-    logger.debug("Database", "Health check passed", { 
+    logger.debug("Database", "Health check passed", {
       collections: collections.length,
-      uptime: getConnectionUptime()
+      uptime: getConnectionUptime(),
     });
-    
+
     return true;
   } catch (error) {
     lastHealthCheck = new Date();
@@ -213,10 +213,10 @@ async function performHealthCheck() {
  */
 function isHealthy() {
   if (!usingMongoDB) return true; // File storage is always "healthy"
-  
+
   const now = new Date();
   const timeSinceLastCheck = lastHealthCheck ? now - lastHealthCheck : Infinity;
-  
+
   // Consider unhealthy if no recent health check or connection is down
   return mongoose.connection.readyState === 1 && timeSinceLastCheck < 60000; // 1 minute
 }
@@ -238,18 +238,21 @@ function startHealthChecks(interval = 30000) {
   if (healthCheckInterval) {
     clearInterval(healthCheckInterval);
   }
-  
+
   healthCheckInterval = setInterval(async () => {
     try {
       const healthy = await performHealthCheck();
       if (!healthy && usingMongoDB) {
-        logger.warn("Database", "Health check failed - connection may be unstable");
+        logger.warn(
+          "Database",
+          "Health check failed - connection may be unstable"
+        );
       }
     } catch (error) {
       logger.error("Database", "Health check error", error);
     }
   }, interval);
-  
+
   logger.info("Database", `Started health checks every ${interval}ms`);
 }
 

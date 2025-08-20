@@ -138,8 +138,8 @@ const Duel = mongoose.connection.readyState === 1 ?
 module.exports = Duel;`,
   },
   {
-    name: "PlayerStats.js",
-    content: `// models/PlayerStats.js
+    name: "playerstats.js",
+    content: `// models/playerstats.js
 const mongoose = require('mongoose');
 
 const PlayerStatsSchema = new mongoose.Schema({

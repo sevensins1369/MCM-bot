@@ -23,7 +23,10 @@ async function loadWallets() {
       // Try to load from MongoDB with timeout and retry logic
       const Wallet = require("../models/Wallet");
       if (!Wallet) {
-        logger.warn("WalletManager", "Wallet model not available, using file storage");
+        logger.warn(
+          "WalletManager",
+          "Wallet model not available, using file storage"
+        );
         await loadWalletsFromFile();
         return;
       }
@@ -36,7 +39,7 @@ async function loadWallets() {
         const walletObj = {
           ...wallet,
           osrs: BigInt(wallet.osrs || "0"),
-          rs3: BigInt(wallet.rs3 || "0")
+          rs3: BigInt(wallet.rs3 || "0"),
         };
         wallets.set(wallet.userId, walletObj);
       });
@@ -60,7 +63,11 @@ async function loadWallets() {
       await loadWalletsFromFile();
       logger.info("WalletManager", "Successfully fell back to file storage");
     } catch (fileError) {
-      logger.error("WalletManager", "Failed to load from file as well", fileError);
+      logger.error(
+        "WalletManager",
+        "Failed to load from file as well",
+        fileError
+      );
       // Initialize empty cache as last resort
       wallets = new Map();
     }

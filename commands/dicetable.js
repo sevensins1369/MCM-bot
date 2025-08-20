@@ -69,7 +69,7 @@ module.exports = {
           .setTimestamp();
 
         await interaction.editReply({ embeds: [embed] });
-      } else if (subcommand === "toggle-bets") {
+      } else if (subcommand === "bets" || subcommand === "toggle-bets") {
         // Toggle betting status
         const result = await toggleDiceBetting(hostId);
 
@@ -167,7 +167,7 @@ module.exports = {
           .setTimestamp();
 
         await message.reply({ embeds: [embed] });
-      } else if (subcommand === "toggle-bets" || subcommand === "toggle") {
+      } else if (subcommand === "toggle-bets" || subcommand === "bets") {
         // Toggle betting status
         const result = await toggleDiceBetting(hostId);
 

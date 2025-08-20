@@ -56,7 +56,7 @@ module.exports = {
       statsCache.set(targetUser.id, playerStats);
 
       // Save to file
-      const STATS_FILE = path.join(__dirname, "../data/playerStats.json");
+      const STATS_FILE = path.join(__dirname, "../data/playerstats.json");
       if (fs.existsSync(STATS_FILE)) {
         const data = fs.readFileSync(STATS_FILE, "utf8");
         const stats = JSON.parse(data);

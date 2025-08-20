@@ -1,94 +1,76 @@
 {
   "832484278197420052": [
     {
-      "result": 90,
-      "timestamp": "2025-08-15T20:39:12.505Z"
+      "result": 16,
+      "timestamp": "2025-08-19T23:50:22.770Z"
     },
     {
-      "result": 90,
-      "timestamp": "2025-08-15T20:39:12.488Z"
+      "result": 16,
+      "timestamp": "2025-08-19T23:50:22.758Z"
     },
     {
-      "result": 90,
-      "timestamp": "2025-08-15T20:27:01.941Z"
+      "result": 66,
+      "timestamp": "2025-08-19T23:48:51.599Z"
     },
     {
-      "result": 90,
-      "timestamp": "2025-08-15T20:27:01.922Z"
+      "result": 66,
+      "timestamp": "2025-08-19T23:48:51.590Z"
     },
     {
-      "result": 77,
-      "timestamp": "2025-08-15T03:19:47.248Z"
+      "result": 57,
+      "timestamp": "2025-08-19T23:45:19.606Z"
     },
     {
-      "result": 77,
-      "timestamp": "2025-08-15T03:19:47.235Z"
+      "result": 57,
+      "timestamp": "2025-08-19T23:45:19.595Z"
     },
     {
-      "result": 89,
-      "timestamp": "2025-08-14T20:14:12.826Z"
+      "result": 26,
+      "timestamp": "2025-08-19T23:44:21.593Z"
     },
     {
-      "result": 89,
-      "timestamp": "2025-08-14T20:14:12.804Z"
+      "result": 26,
+      "timestamp": "2025-08-19T23:44:21.583Z"
     },
     {
-      "result": 10,
-      "timestamp": "2025-08-10T02:23:38.172Z"
+      "result": 38,
+      "timestamp": "2025-08-19T23:42:46.446Z"
     },
     {
-      "result": 10,
-      "timestamp": "2025-08-10T02:23:38.151Z"
+      "result": 38,
+      "timestamp": "2025-08-19T23:42:46.437Z"
     },
     {
-      "result": 92,
-      "timestamp": "2025-08-osrsT20:17:50.316Z"
+      "result": 100,
+      "timestamp": "2025-08-19T23:37:07.586Z"
     },
     {
-      "result": 92,
-      "timestamp": "2025-08-osrsT20:17:50.293Z"
+      "result": 100,
+      "timestamp": "2025-08-19T23:37:07.576Z"
     },
     {
-      "result": 3,
-      "timestamp": "2025-08-osrsT20:17:05.228Z"
+      "result": 48,
+      "timestamp": "2025-08-19T23:27:59.969Z"
     },
     {
-      "result": 3,
-      "timestamp": "2025-08-osrsT20:17:05.210Z"
+      "result": 48,
+      "timestamp": "2025-08-19T23:27:59.958Z"
     },
     {
-      "result": 77,
-      "timestamp": "2025-08-osrsT20:10:46.435Z"
+      "result": 85,
+      "timestamp": "2025-08-19T23:23:56.939Z"
     },
     {
-      "result": 77,
-      "timestamp": "2025-08-osrsT20:10:46.417Z"
+      "result": 85,
+      "timestamp": "2025-08-19T23:23:56.930Z"
     },
     {
-      "result": 96,
-      "timestamp": "2025-08-osrsT20:01:57.814Z"
+      "result": 47,
+      "timestamp": "2025-08-19T23:16:35.822Z"
     },
     {
-      "result": 96,
-      "timestamp": "2025-08-osrsT20:01:57.806Z"
-    },
-    {
-      "result": 70,
-      "timestamp": "2025-08-osrsT20:00:51.747Z"
-    },
-    {
-      "result": 70,
-      "timestamp": "2025-08-osrsT20:00:51.730Z"
-    }
-  ],
-  "734041292170068015": [
-    {
-      "result": 10,
-      "timestamp": "2025-08-10T02:23:55.245Z"
-    },
-    {
-      "result": 10,
-      "timestamp": "2025-08-10T02:23:55.234Z"
+      "result": 47,
+      "timestamp": "2025-08-19T23:16:35.810Z"
     }
   ]
 }
