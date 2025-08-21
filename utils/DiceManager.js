@@ -18,8 +18,8 @@ const activeGames = new Map();
 const activeDiceGames = new Map(); // For hosting dice tables
 
 // File path for storing active games
-const GAMES_FILE = path.join(__dirname, "../data/activeGames.json");
-const DICE_TABLES_FILE = path.join(__dirname, "../data/diceTables.json");
+const GAMES_FILE = path.join(__dirname, "/container/data/activeGames.json");
+const DICE_TABLES_FILE = path.join(__dirname, "/container/data/diceTables.json");
 
 /**
  * Load active dice games from file
@@ -851,7 +851,7 @@ async function completeDiceGame(hostId, roll) {
 async function getHostRollHistory(hostId, limit = 15) {
   try {
     // Check if roll history file exists
-    const rollHistoryPath = path.join(__dirname, "../data/rollHistory.json");
+    const rollHistoryPath = path.join(__dirname, "/container/data/rollHistory.json");
 
     if (!fs.existsSync(rollHistoryPath)) {
       return [];
@@ -881,7 +881,7 @@ async function getHostRollHistory(hostId, limit = 15) {
 async function addRollToHistory(hostId, result) {
   try {
     // Ensure data directory exists
-    const dataDir = path.join(__dirname, "../data");
+    const dataDir = path.join(__dirname, "/container/data");
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }

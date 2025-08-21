@@ -16,8 +16,8 @@ let statsCache = new Map();
 let duelHistoryCache = new Map();
 
 // File paths for local storage
-const STATS_FILE = path.join(__dirname, "../data/playerStats.json");
-const DUEL_HISTORY_FILE = path.join(__dirname, "../data/duelHistory.json");
+const STATS_FILE = path.join(__dirname, "/container/data/playerStats.json");
+const DUEL_HISTORY_FILE = path.join(__dirname, "/container/data/duelHistory.json");
 
 /**
  * Get player statistics with timeframe support
@@ -525,7 +525,7 @@ function debugStats(userId) {
   }
 
   // Check file
-  const STATS_FILE = path.join(__dirname, "../data/playerStats.json");
+  const STATS_FILE = path.join(__dirname, "/container/data/playerStats.json");
   if (fs.existsSync(STATS_FILE)) {
     try {
       const data = fs.readFileSync(STATS_FILE, "utf8");

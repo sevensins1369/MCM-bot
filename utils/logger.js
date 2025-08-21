@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 function ensureLogDirectory() {
-  const logDir = path.join(__dirname, '../logs');
+  const logDir = path.join(__dirname, '/container/logs');
   if (!fs.existsSync(logDir)) {
     fs.mkdirSync(logDir, { recursive: true });
   }

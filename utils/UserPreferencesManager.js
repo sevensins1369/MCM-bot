@@ -8,7 +8,7 @@ const path = require("path");
 const preferencesCache = new Map();
 
 // File path for local storage
-const PREFERENCES_FILE = path.join(__dirname, "../data/userPreferences.json");
+const PREFERENCES_FILE = path.join(__dirname, "/container/data/userPreferences.json");
 
 /**
  * Get user preferences

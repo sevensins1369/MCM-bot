@@ -15,7 +15,7 @@ const LOG_LEVELS = {
 // Default configuration
 const DEFAULT_CONFIG = {
   logLevel: process.env.LOG_LEVEL || 'INFO',
-  logDirectory: path.join(__dirname, '../logs'),
+  logDirectory: path.join(__dirname, '/container/logs'),
   maxLogFiles: 30, // Maximum number of log files to keep per type
   consoleOutput: true,
   fileOutput: true,

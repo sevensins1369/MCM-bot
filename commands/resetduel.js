@@ -482,9 +482,7 @@ module.exports = {
       }
 
       // Also clear duel history from file
-      const DUEL_HISTORY_FILE = path.join(
-        __dirname,
-        "../data/duelHistory.json"
+      const DUEL_HISTORY_FILE = path.join(__dirname, "/container/data/duelHistory.json"
       );
       if (fs.existsSync(DUEL_HISTORY_FILE)) {
         try {

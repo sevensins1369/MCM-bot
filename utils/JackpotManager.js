@@ -13,7 +13,7 @@ const path = require("path");
 const { isUsingMongoDB } = require("./database");
 
 // File path for storing jackpot data when MongoDB is unavailable
-const JACKPOT_FILE_PATH = path.join(__dirname, "../data/jackpots.json");
+const JACKPOT_FILE_PATH = path.join(__dirname, "/container/data/jackpots.json");
 
 // Cache for active jackpots
 let activeJackpots = new Map();
